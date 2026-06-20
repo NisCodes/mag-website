@@ -1,0 +1,9 @@
+.active {
+  color: goldenrod;
+  font-weight: bold;
+}
+
+.blog-filters .active-filter {
+  color: goldenrod !important;
+  font-weight: bold !important;
+}

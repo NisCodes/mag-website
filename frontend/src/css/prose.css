@@ -1,0 +1,60 @@
+.prose-container {
+  padding: 1rem;
+  max-width: 600px;
+  margin: auto;
+}
+
+.prose-title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.prose-entry {
+  border-bottom: 1px solid #ddd;
+  padding: 0.5rem 0;
+}
+
+.prose-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+
+.prose-entry-title {
+  font-size: 1.1rem;
+  color: #333;
+  margin: 0;
+}
+
+.prose-toggle-icon {
+  font-size: 1rem;
+  color: #888;
+}
+
+.prose-details {
+  padding: 0.5rem 1rem;
+  color: #555;
+}
+
+.prose-content {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+.prose-author,
+.prose-submitted-by,
+.prose-date {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.prose-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+}

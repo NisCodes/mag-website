@@ -1,0 +1,79 @@
+/* Magazine.css */
+.magazine.section {
+  padding: 40px 0;
+  background-color: #1a1a1a; /* Dark theme */
+  color: #f5f5f5; /* Light text for contrast */
+}
+
+.section-title {
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.section-title h2 {
+  font-size: 28px;
+  font-weight: bold;
+  color: goldenrod; /* Goldenrod headings */
+}
+
+.section-title p {
+  font-size: 16px;
+  color: #ccc; /* Slightly lighter text */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Swiper styling */
+.init-swiper {
+  padding: 20px 0;
+}
+
+/* Magazine item styling */
+.magazine-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 2px solid goldenrod; /* Border around each magazine item */
+  border-radius: 8px; /* Optional rounded corners */
+  padding: 10px; /* Padding inside the border */
+  background-color: #2c2c2c; /* Dark background for items */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+  transition: transform 0.3s ease; /* Transition for hover effect */
+}
+
+.magazine-item:hover {
+  transform: translateY(-5px) rotate(2deg); /* Lift and rotate on hover */
+}
+
+/* Magazine image styling */
+.magazine-img {
+  width: 210px; /* Increase width */
+  height: 297px; /* Increase height */
+  object-fit: cover; /* Crop image to fit the defined dimensions */
+  border: 3px solid goldenrod; /* Border around the image */
+  border-radius: 5px; /* Rounded corners for the image */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effect */
+}
+
+.magazine-img:hover {
+  transform: scale(1.05) rotate(2deg); /* Slightly enlarge and rotate on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7); /* Deeper shadow on hover */
+}
+
+/* Swiper pagination */
+.swiper-pagination {
+  bottom: 10px !important; /* Positioning the dots */
+}
+
+.swiper-pagination-bullet {
+  background: goldenrod; /* Dot color */
+  opacity: 1; /* Make dots visible */
+}
+
+.swiper-pagination-bullet-active {
+  background: #f5f5f5; /* Active dot color */
+}

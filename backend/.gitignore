@@ -1,0 +1,44 @@
+# Node.js dependencies
+/node_modules
+/npm-debug.log
+/yarn-error.log
+/package-lock.json
+/yarn.lock
+
+# Logs
+/logs
+*.log
+logs/*.log
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Debugging and test coverage
+coverage/
+*.lcov
+
+# Environment variables
+.env
+
+# Build files
+dist/
+build/
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+
+# IDE/Editor specific files
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Ignore any database dumps
+*.sql
+*.sqlite
+*.sqlite3
+
+# Ignore temporary files
+*.swp
+*.tmp
