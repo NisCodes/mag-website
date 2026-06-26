@@ -26,7 +26,7 @@ export const pushBlog = async (req, res) => {
   }
 };
 
-// 2. Fetch all blogs (Named 'getAllBlogs' to match your router)
+// 2. Fetch all blogs
 export const getAllBlogs = async (req, res) => {
   try {
     const snapshot = await db.collection("blogs").get();
@@ -72,3 +72,6 @@ export const deleteBlog = async (req, res) => {
 export const approveBlog = async (req, res) => {
   res.status(200).json({ message: "Approval feature placeholder active" });
 };
+
+// 6. Fallback case match for lowercase router import tracking
+export const getallBlogs = getAllBlogs;
