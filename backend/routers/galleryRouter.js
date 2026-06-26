@@ -7,3 +7,4 @@ router.post("/post", pushImage);
 router.get("/get", getImage);
 
 export { router as galleryRouter };
+export default router;
