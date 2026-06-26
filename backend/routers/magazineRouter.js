@@ -12,3 +12,4 @@ router.get("/get", getMagazine);
 router.delete("/delete/:id", deleteMagazine);
 
 export { router as magazineRouter };
+export default router;
