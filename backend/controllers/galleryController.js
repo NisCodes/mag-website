@@ -2,41 +2,45 @@ import { db } from "../server.js";
 
 // Handle image upload
 export const pushImage = async (req, res) => {
-  const formData = req.body;
+  // Convert binary buffer to base64 string to store cleanly in Firestore
+  let imageBase64 = null;
+  if (req.file && req.file.buffer) {
+    imageBase64 = req.file.buffer.toString("base64");
+  }
 
-  const image = req.file ? req.file.buffer : null;
-
-  if (!image) {
+  if (!imageBase64) {
     return res.status(400).json({ error: "No image provided" });
   }
 
   try {
-    await db.query(
-      `INSERT INTO gallery (image_data) 
-             VALUES ($1)`,
-      [image]
-    );
+    const newGalleryPost = {
+      image_data: imageBase64,
+      createdAt: new Date().toISOString()
+    };
+
+    await db.collection("gallery").add(newGalleryPost);
     res.status(201).json({ message: "Gallery post created successfully" });
   } catch (err) {
-    console.error(`Database error: ${err}`);
+    console.error(`Firestore error: ${err}`);
     res.status(500).json({ error: "Error creating gallery post" });
   }
 };
 
 export const getImage = async (req, res) => {
   try {
-    const response = await db.query("SELECT * FROM gallery");
-    const images = response.rows.map((image) => {
-      if (image.image_data) {
-        const imageBase64 = image.image_data.toString("base64");
-        return { ...image, image_data: imageBase64 };
-      }
-      return image;
+    const snapshot = await db.collection("gallery").get();
+    
+    const images = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id, // Explicitly include document ID for frontend usage
+        ...data
+      };
     });
 
     res.status(200).json(images);
   } catch (err) {
-    console.error(`Database error: ${err}`);
+    console.error(`Firestore error: ${err}`);
     res.status(500).json({ error: "Error fetching gallery images" });
   }
 };
