@@ -3,62 +3,61 @@ import { db } from "../server.js";
 export const pushMagazine = async (req, res) => {
   const formData = req.body;
 
-  const image = req.file ? req.file.buffer : null;
+  let imageBase64 = null;
+  if (req.file && req.file.buffer) {
+    imageBase64 = req.file.buffer.toString("base64");
+  }
 
   const newMagazinePost = {
-    edition: formData.edition,
-    link: formData.link,
-    image: image,
-    date: formData.date || new Date(),
+    edition: formData.edition || "",
+    link: formData.link || "",
+    image: imageBase64,
+    date: formData.date || new Date().toISOString(),
+    createdAt: new Date().toISOString()
   };
 
   try {
-    await db.query(
-      `INSERT INTO magazine (edition, link, image, date) 
-       VALUES ($1, $2, $3, $4)`,
-      [
-        newMagazinePost.edition,
-        newMagazinePost.link,
-        newMagazinePost.image,
-        newMagazinePost.date,
-      ]
-    );
+    await db.collection("magazine").add(newMagazinePost);
     res.status(201).json({ message: "Magazine added successfully" });
   } catch (err) {
-    console.error(`Database error: ${err}`);
+    console.error(`Firestore error: ${err}`);
     res.status(500).json({ error: "Error adding magazine" });
   }
 };
 
 export const getMagazine = async (req, res) => {
   try {
-    const response = await db.query("SELECT * FROM magazine");
-    const magazines = response.rows.map((magazine) => {
-      if (magazine.image) {
-        const imageBase64 = magazine.image.toString("base64");
-        return { ...magazine, image: imageBase64 };
-      }
-      return magazine;
+    const snapshot = await db.collection("magazine").get();
+    
+    const magazines = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data
+      };
     });
 
     res.status(200).json(magazines);
   } catch (err) {
-    console.error(`Database error: ${err}`);
+    console.error(`Firestore error: ${err}`);
     res.status(500).json({ error: "Error fetching magazines" });
   }
 };
 
 export const deleteMagazine = async (req, res) => {
-  try{
-    const result = await db.query("SELECT * FROM magazine WHERE id = $1", [req.params.id]);
-    if(result.rows.length === 0){
-      return res.status(404).json({error: "Magazine not found"});
-    }
-    await db.query("DELETE FROM magazine WHERE id = $1", [req.params.id]);
+  try {
+    const magazineId = req.params.id;
+    const magazineRef = db.collection("magazine").doc(magazineId);
+    const doc = await magazineRef.get();
 
-    res.status(200).json({message: "Magazine deleted successfully"});
-  }catch(err){
-    console.error(`Database error: ${err}`);
-    res.status(500).json({error: "Error deleting magazine"});
+    if (!doc.exists) {
+      return res.status(404).json({ error: "Magazine not found" });
+    }
+
+    await magazineRef.delete();
+    res.status(200).json({ message: "Magazine deleted successfully" });
+  } catch (err) {
+    console.error(`Firestore error: ${err}`);
+    res.status(500).json({ error: "Error deleting magazine" });
   }
 };
