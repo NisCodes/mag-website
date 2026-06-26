@@ -6,11 +6,11 @@ import admin from "firebase-admin";
 
 // Notice the curly braces are removed from blogRouter!
 import blogRouter from "./routers/blogRouter.js";
-import { galleryRouter } from "./routers/galleryRouter.js";
-import { messageRouter } from "./routers/messageRouter.js";
-import { poetryRouter } from "./routers/poetryRouter.js";
+import galleryRouter  from "./routers/galleryRouter.js";
+import  messageRouter  from "./routers/messageRouter.js";
+import poetryRouter from "./routers/poetryRouter.js";
 import eventRouter from "./routers/eventRouter.js";
-import { magazineRouter } from "./routers/magazineRouter.js";
+import magazineRouter  from "./routers/magazineRouter.js";
 
 const app = express();
 const port = 4000;
