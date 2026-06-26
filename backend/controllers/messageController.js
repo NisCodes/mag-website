@@ -10,15 +10,19 @@ export const pushMessage = async (req, res) => {
   }
 
   try {
-    // Insert the message into the database
-    await db.query(
-      `INSERT INTO messages (name, email, subject, message) 
-       VALUES ($1, $2, $3, $4)`,
-      [name, email, subject, message]
-    );
+    const newMessage = {
+      name,
+      email,
+      subject: subject || "",
+      message,
+      createdAt: new Date().toISOString()
+    };
+
+    // Insert the message into the Firestore collection
+    await db.collection("messages").add(newMessage);
     res.status(201).json({ message: "Message created successfully" });
   } catch (err) {
-    console.error(`Database error: ${err}`);
+    console.error(`Firestore error: ${err}`);
     res.status(500).json({ error: "Error creating message" });
   }
 };
@@ -26,10 +30,16 @@ export const pushMessage = async (req, res) => {
 // Fetch all messages
 export const getMessages = async (req, res) => {
   try {
-    const response = await db.query("SELECT * FROM messages");
-    res.status(200).json(response.rows);
+    const snapshot = await db.collection("messages").get();
+    
+    const messages = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    res.status(200).json(messages);
   } catch (err) {
-    console.error(`Database error: ${err}`);
+    console.error(`Firestore error: ${err}`);
     res.status(500).json({ error: "Error fetching messages" });
   }
 };
