@@ -1,6 +1,6 @@
 import { db } from "../server.js";
 
-// 1. Push a new blog post
+// 1. Push a new blog post to Firestore
 export const pushBlog = async (req, res) => {
   const formData = req.body;
 
@@ -26,7 +26,7 @@ export const pushBlog = async (req, res) => {
   }
 };
 
-// 2. Fetch all blogs
+// 2. Fetch all blog posts from Firestore
 export const getAllBlogs = async (req, res) => {
   try {
     const snapshot = await db.collection("blogs").get();
@@ -46,10 +46,7 @@ export const getAllBlogs = async (req, res) => {
   }
 };
 
-// 3. Fallback duplicate export for 'getBlogs' (To stop router from crashing)
-export const getBlogs = getAllBlogs;
-
-// 4. Delete a blog post
+// 3. Delete a blog post from Firestore
 export const deleteBlog = async (req, res) => {
   try {
     const blogId = req.params.id;
@@ -67,11 +64,3 @@ export const deleteBlog = async (req, res) => {
     res.status(500).json({ error: "Error in deleting blog entry" });
   }
 };
-
-// 5. Placeholder for approveBlog (To completely satisfy the router import)
-export const approveBlog = async (req, res) => {
-  res.status(200).json({ message: "Approval feature placeholder active" });
-};
-
-// 6. Fallback case match for lowercase router import tracking
-export const getallBlogs = getAllBlogs;
