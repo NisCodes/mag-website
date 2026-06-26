@@ -1,11 +1,15 @@
 import express from "express";
-import {getallBlogs, pushBlog, getBlogs, deleteBlog, approveBlog} from "../controllers/blogController.js";
+import multer from "multer";
+import { getAllBlogs, pushBlog, deleteBlog } from "../controllers/blogController.js";
 
 const router = express.Router();
 
-router.post("/post", pushBlog);
-router.get("/get", getBlogs);
-router.delete("/delete/:id", deleteBlog);
-router.patch("/approve/:id", approveBlog);
-router.get("/getall", getallBlogs);
-export { router as blogRouter };
+// Configure multer for handling image uploads in-memory
+const upload = multer({ storage: multer.memoryStorage() });
+
+// API Endpoints linked to your controller functions
+router.get("/", getAllBlogs);
+router.post("/", upload.single("image"), pushBlog);
+router.delete("/:id", deleteBlog);
+
+export default router;
