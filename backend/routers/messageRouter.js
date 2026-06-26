@@ -7,3 +7,4 @@ router.post("/post", pushMessage);
 router.get("/get", getMessages);
 
 export { router as messageRouter };
+export default router;
