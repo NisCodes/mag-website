@@ -69,6 +69,7 @@ app.use("/events", eventRouter);
 app.use("/magazine", magazineRouter);
 
 export { db };
+export default app;
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
