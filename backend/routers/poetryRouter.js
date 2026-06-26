@@ -9,3 +9,4 @@ router.delete("/delete/:id", deletePoem);
 router.get("/getall", getallPoem);
 router.patch("/approve/:id", approvePoem);
 export { router as poetryRouter };
+export default router;
