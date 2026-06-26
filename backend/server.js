@@ -9,7 +9,7 @@ import blogRouter from "./routers/blogRouter.js";
 import { galleryRouter } from "./routers/galleryRouter.js";
 import { messageRouter } from "./routers/messageRouter.js";
 import { poetryRouter } from "./routers/poetryRouter.js";
-import { eventRouter } from "./routers/eventRouter.js";
+import eventRouter from "./routers/eventRouter.js";
 import { magazineRouter } from "./routers/magazineRouter.js";
 
 const app = express();
