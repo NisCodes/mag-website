@@ -25,7 +25,7 @@ export const pushBlog = async (req, res) => {
   }
 };
 
-export const getBlog = async (req, res) => {
+export const getAllBlogs = async (req, res) => {
   try {
     const snapshot = await db.collection("blogs").get();
     
