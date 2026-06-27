@@ -9,7 +9,7 @@ const Prose = ({ category }) => {
 
   // Fetch prose entries from the backend
   useEffect(() => {
-    axios.get('http://localhost:4000/poetry/get')
+    axios.get('https://mag-backend-lime.vercel.app/poetry/get')
       .then(response => {
         // Filter entries based on the 'Prose' category or any specific condition
         const proseData = response.data.filter(entry => entry.category === category);
@@ -29,7 +29,7 @@ const Prose = ({ category }) => {
     return text.replace(/\r\n/g, "<br />");
   };
   var title = "nulll"
-  if(category=== "Hindi") title = "~~अफ़साना~~"
+  if(category=== "Hindi") title = "~~अफ़साना~~"
   else if(category === "Marathi") title = "~~वात्सल्याचे मोती~~"
   else title = "Prose"
   return (
