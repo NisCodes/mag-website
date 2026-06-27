@@ -109,7 +109,7 @@ const BlogSection = () => {
                     {blog.title}
                   </h5>
                   <p className="card-text" style={{ fontSize: "0.875rem" }}>
-                    {blog.content.slice(0, 60)}...
+                    {blog.content ? blog.content.slice(0, 60) : "No content available"}...
                   </p>
                   <span style={{ fontSize: "0.8rem" }}>
                     Author: {blog.author}
@@ -131,7 +131,6 @@ const BlogSection = () => {
           >
             Explore More
           </button>{" "}
-          {/* Explore More Button */}
         </div>
       </div>
     </section>
