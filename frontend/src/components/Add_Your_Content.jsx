@@ -58,7 +58,7 @@ function AddYourContent() {
 
     try {
       if (formType === "blogs") {
-        // Blogs require FormData because they handle actual image file streams
+        // Blogs process image streams using standard multi-part FormData
         const formDataPayload = new FormData();
         for (const key in formData) {
           formDataPayload.append(key, formData[key]);
@@ -78,7 +78,7 @@ function AddYourContent() {
           category: "College Life",
         });
       } else {
-        // Poetry/Prose uses clean JSON payloads since it only processes text fields
+        // Poetry/Prose processes text-only attributes using standard JSON payloads
         const jsonPayload = {
           title: eventData.title,
           author: eventData.author,
@@ -91,7 +91,7 @@ function AddYourContent() {
         
         setFormStatus({
           loading: false,
-          success: "Poetry submitted successfully. Thankyou!",
+          success: "Poetry submitted successfully. Under Review by MAG.COM",
         });
         setEventData({
           title: "",
@@ -233,7 +233,6 @@ function AddYourContent() {
                 />
               </div>
               
-              {/* Image upload is only shown/necessary for blog posts */}
               {formType === "blogs" && (
                 <div className="form-group mt-2">
                   <input
@@ -254,7 +253,7 @@ function AddYourContent() {
               <div className="error-message" style={{ color: "red" }}>{formStatus.error}</div>
             )}
             {formStatus.success && (
-              <div className="sent-message" style={{ color: "green" }}>{formStatus.success}</div>
+              <div className="sent-message" style={{ color: "green", fontWeight: "500" }}>{formStatus.success}</div>
             )}
             <button type="submit" className="btn btn-dark-brown submit-button">
               Submit
