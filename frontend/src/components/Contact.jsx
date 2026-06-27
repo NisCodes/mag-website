@@ -32,7 +32,7 @@ function Contact() {
     setSentMessage("");
 
     // API endpoint where the form will be submitted
-    const apiUrl = "http://localhost:4000/messages/post";
+    const apiUrl = "https://mag-backend-lime.vercel.app/messages/post";
 
     try {
       // Make POST request with the form data
