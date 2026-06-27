@@ -11,7 +11,7 @@ const BlogSection = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/blogs/get")
+      .get("https://mag-backend-lime.vercel.app/blogs")
       .then((response) => {
         setBlogs(response.data);
         setLoading(false);
