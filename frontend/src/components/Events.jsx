@@ -50,65 +50,89 @@ const Events = () => {
         style={{ opacity: 0.4, height: "100%", width: "100%" }}
       />
 
-      <div className="container d-flex justify-content-center">
+      <div className="container section-title" data-aos="fade-up" style={{ textAlign: "center", marginBottom: "40px" }}>
+        <h2 style={{ color: "#cca45e", fontFamily: "Georgia, serif" }}>Events</h2>
+        <p style={{ color: "#fff" }}>Latest Events & Announcements</p>
+      </div>
+
+      <div className="container px-4">
         <Swiper
           modules={[Pagination, Autoplay]}
-          loop={events.length > 1}
+          loop={events.length > 3} // Only loop if there are enough items to scroll
           speed={1000}
           autoplay={{ delay: 4000, disableOnInteraction: false }}
-          slidesPerView={1}
+          spaceBetween={30} // Adds space between the cards
           pagination={{ clickable: true }}
           className="init-swiper"
           data-aos="fade-up"
           data-aos-delay="100"
-          style={{ maxWidth: "850px", paddingBottom: "40px" }} // Restricts the massive horizontal stretch
+          style={{ paddingBottom: "50px" }}
+          breakpoints={{
+            // Responsive break points
+            320: {
+              slidesPerView: 1, // 1 card on mobile screens
+            },
+            768: {
+              slidesPerView: 2, // 2 cards on tablets
+            },
+            1024: {
+              slidesPerView: 3, // 3 cards on desktop monitors
+            }
+          }}
         >
           {events.map((event) => (
             <SwiperSlide key={event.id || event._id}>
               <div 
-                className="row g-4 align-items-center justify-content-center" 
+                className="card bg-dark text-light h-100"
                 style={{ 
                   cursor: "pointer", 
-                  padding: "30px", 
-                  borderRadius: "16px",
-                  backgroundColor: "rgba(0, 0, 0, 0.65)",
-                  border: "1px solid rgba(204, 164, 94, 0.15)",
+                  borderRadius: "12px",
+                  backgroundColor: "rgba(20, 20, 20, 0.75)",
+                  border: "1px solid rgba(204, 164, 94, 0.2)",
                   backdropFilter: "blur(10px)",
-                  margin: "0 10px"
+                  display: "flex",
+                  flexDirection: "column",
+                  transition: "transform 0.2s ease, border-color 0.2s ease"
                 }}
                 onClick={() => openEventModal(event)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-5px)";
+                  e.currentTarget.style.borderColor = "#cca45e";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.borderColor = "rgba(204, 164, 94, 0.2)";
+                }}
               >
-                {/* Left Side: Scaled Image */}
-                <div className="col-md-5 text-center">
+                {/* Image Section inside the Card */}
+                <div style={{ backgroundColor: "#000", borderTopLeftRadius: "12px", borderTopRightRadius: "12px", padding: "15px", textAlign: "center" }}>
                   <img
                     src={`data:image/jpeg;base64,${event.image}`}
-                    className="img-fluid"
+                    className="card-img-top"
                     alt={event.title}
                     style={{ 
-                      borderRadius: "8px", 
-                      maxHeight: "260px", 
+                      maxHeight: "180px", 
                       width: "100%", 
-                      objectFit: "contain",
-                      boxShadow: "0 8px 24px rgba(0,0,0,0.5)"
+                      objectFit: "contain"
                     }}
                   />
                 </div>
                 
-                {/* Right Side: Clean Typography */}
-                <div className="col-md-7 ps-md-4">
-                  <h3 style={{ color: "#cca45e", fontFamily: "Georgia, serif", fontSize: "1.75rem", marginBottom: "8px" }}>
+                {/* Content Section inside the Card */}
+                <div className="card-body d-flex flex-column" style={{ padding: "20px", backgroundColor: "transparent" }}>
+                  <h5 style={{ color: "#cca45e", fontFamily: "Georgia, serif", fontSize: "1.25rem", marginBottom: "8px" }}>
                     {event.title}
-                  </h3>
-                  <p style={{ color: "#aaa", fontSize: "0.95rem", fontWeight: "600", marginBottom: "12px" }}>
+                  </h5>
+                  <p style={{ color: "#aaa", fontSize: "0.85rem", fontWeight: "600", marginBottom: "12px" }}>
                     {event.date || "N/A"}
                   </p>
-                  <p style={{ color: "#ddd", fontSize: "0.95rem", lineHeight: "1.5", margin: 0 }}>
-                    {event.content && event.content.length > 120 
-                      ? `${event.content.slice(0, 120)}...` 
+                  <p className="card-text text-muted" style={{ fontSize: "0.9rem", color: "#ddd", flexGrow: 1, margin: 0 }}>
+                    {event.content && event.content.length > 90 
+                      ? `${event.content.slice(0, 90)}...` 
                       : event.content}
                   </p>
-                  <span style={{ color: "#cca45e", fontSize: "0.85rem", display: "inline-block", marginTop: "12px", textDecoration: "underline" }}>
-                    Read more details →
+                  <span style={{ color: "#cca45e", fontSize: "0.85rem", marginTop: "15px", display: "inline-block", fontWeight: "500" }}>
+                    Read details →
                   </span>
                 </div>
               </div>
