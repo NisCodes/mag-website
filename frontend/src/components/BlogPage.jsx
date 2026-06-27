@@ -10,7 +10,7 @@ const BlogPage = () => {
   const [selectedBlog, setSelectedBlog] = useState(null); // State to hold the clicked blog for modal
 
   useEffect(() => {
-    axios.get('http://localhost:4000/blogs/get')
+    axios.get('https://mag-backend-lime.vercel.app/blogs')
       .then(response => {
         setBlogs(response.data);
         setLoading(false);
