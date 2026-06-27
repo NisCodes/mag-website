@@ -17,17 +17,16 @@ const Events = () => {
     // Fetch the top 3 latest events from the backend
     const fetchEvents = async () => {
       try {
-        const response = await axios.get("https://mag-backend-lime.vercel.app/events/get"); // Updated Vercel URL
+        const response = await axios.get("https://mag-backend-lime.vercel.app/events/get");
         const formattedEvents = response.data.map(event => ({
           ...event,
-          date: event.date.slice(0, 10) // Slicing the date here to get only the date part
+          date: event.date ? event.date.slice(0, 10) : "Date N/A" // Safeguard added here
         }));
         setEvents(formattedEvents);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
     };
-
     fetchEvents();
   }, []);
 
