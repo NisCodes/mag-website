@@ -16,7 +16,7 @@ const Section = () => {
               <a href="#blog" className="cta-btn">
                 Blogs
               </a>
-              <a href="#add-your-content" className="cta-btn">
+              <a href="#magazine" className="cta-btn">
                 Insight Magazine
               </a>
             </div>
