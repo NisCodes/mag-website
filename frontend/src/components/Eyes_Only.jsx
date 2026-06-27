@@ -1,16 +1,78 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useNavigate } from "react-router-dom"; // Import for navigation
+import { useNavigate } from "react-router-dom";
 import { Tab, Nav } from "react-bootstrap";
+import axios from "axios";
 import "../css/blog.css";
+
 function EyesOnly() {
+  const [poems, setPoems] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     AOS.init({ duration: 1000 });
+
+    // Fetch the poetry documents from your serverless API
+    const fetchPoetry = async () => {
+      try {
+        const response = await axios.get("https://mag-backend-lime.vercel.app/poetry/get");
+        setPoems(response.data);
+      } catch (error) {
+        console.error("Error fetching literary submissions:", error);
+      }
+    };
+    fetchPoetry();
   }, []);
 
-  const navigate = useNavigate(); // Use navigate for "Explore More" button
+  // Helper function to render a list of cards dynamically based on selected language key
+  const renderPoetryList = (languageFilter, routePath) => {
+    const filteredItems = poems.filter(
+      (p) => p.category && p.category.toLowerCase() === languageFilter.toLowerCase()
+    );
+
+    if (filteredItems.length === 0) {
+      return (
+        <div className="text-center py-4" style={{ color: "#aaa" }}>
+          <p className="fst-italic">No compositions published under this language section yet.</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="row gy-4">
+        {filteredItems.map((poem) => (
+          <div className="col-12 mb-4" key={poem.id || poem._id}>
+            <div 
+              className="p-4" 
+              style={{ 
+                backgroundColor: "rgba(20, 20, 20, 0.6)", 
+                border: "1px solid rgba(204, 164, 94, 0.2)", 
+                borderRadius: "12px" 
+              }}
+            >
+              <h3 style={{ color: "#cca45e", fontFamily: "Georgia, serif" }}>{poem.title}</h3>
+              <p style={{ color: "#aaa", fontSize: "0.85rem" }}>— Written by {poem.author} ({poem.rollno || "VNIT Member"})</p>
+              <p className="mt-3" style={{ whiteSpace: "pre-wrap", color: "#eee", lineHeight: "1.6" }}>
+                {poem.content}
+              </p>
+            </div>
+          </div>
+        ))}
+        
+        <div className="row justify-content-center mt-2">
+          <button
+            className="btn btn-primary btn-golden"
+            onClick={() => navigate(routePath)}
+            style={{ maxWidth: "200px" }}
+          >
+            Explore More
+          </button>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <section id="Eyes_only" className="Eyes_only section">
@@ -39,102 +101,15 @@ function EyesOnly() {
             <div className="col-lg-9 mt-4 mt-lg-0">
               <Tab.Content>
                 <Tab.Pane eventKey="Eyes_only-tab-1">
-                  <div className="row">
-                    <div className="col-lg-8 details order-2 order-lg-1">
-                      <h3>Vellichor</h3>
-                      <p className="fst-italic">
-                        (n.) the strange wistfulness of used bookstores, which are somehow infused with the passage of time—filled with thousands of old books you’ll never have time to read.
-                      </p>
-                      
-                    </div>
-                    <div className="col-lg-4 text-center order-1 order-lg-2">
-                      <img
-                        src="assets/img/Eyes_only-1.png"
-                        alt=""
-                        className="img-fluid"
-                      />
-                    </div>
-                  </div>
-                  <div className="row justify-content-center mt-4">
-                    <button
-                      className="btn btn-primary btn-golden"
-                      onClick={() => navigate("/prose/english")}
-                    >
-                      Explore More
-                    </button>{" "}
-                  </div>
+                  {renderPoetryList("English", "/prose/english")}
                 </Tab.Pane>
 
                 <Tab.Pane eventKey="Eyes_only-tab-2">
-                  {/* Similar structure as above */}
-                  <div className="row">
-                    <div className="col-lg-8 details order-2 order-lg-1">
-                      <h3>अफ़साना</h3>
-              
-                      <p>
-                      अब कलम परेशाँ कातिब से <br /> 
-                      क्यों लिखे वो केवल आठ पहर, 
-                      क्यों रहे वो केवल एक शहर। <br />
-                      सपनो के शहर में क्यों न रहे ?
-                      मिथ्या की लहर में क्यों न बहे ?<br />
-                      तो कलम पकड़ कातिब की कलाई,
-                      तोड़े अडिग समाज का ताला <br />
-                      जग-संसार को झूठ बताए, 
-                      चलो लिखे कोई अफ़साना<br />
-
-                      </p>
-                    </div>
-                    <div className="col-lg-4 text-center order-1 order-lg-2">
-                      <img
-                        src="assets/img/Eyes_only-1.png"
-                        alt=""
-                        className="img-fluid"
-                      />
-                    </div>
-                  </div>
-                  <div className="row justify-content-center mt-4">
-                    <button
-                      className="btn btn-primary btn-golden"
-                      onClick={() => navigate("/prose/hindi")}
-                    >
-                      Explore More
-                    </button>{" "}
-                  </div>
+                  {renderPoetryList("Hindi", "/prose/hindi")}
                 </Tab.Pane>
 
                 <Tab.Pane eventKey="Eyes_only-tab-3">
-                  {/* Similar structure as above */}
-                  <div className="row">
-                    <div className="col-lg-8 details order-2 order-lg-1">
-                      <h3>वात्सल्याचे मोती</h3>
-            
-                      <p>
-                      तुटले बांध स्वप्नांचे,  <br />
-                      हरवले साज रंगांचे,  <br />
-                      दाही दिशांना आस नयनांची,  <br />
-                      आणि खुंटलेले वस्त्र विचारांचे,  <br />
-                      मळलेला रंग मुखवट्याचा,  <br />
-                      झालेला भंग प्रेमाचा,  <br />
-                      कथा असो कोणतीही,  <br />
-                      आला पाऊस घेऊन संच कहाण्यांचा ! <br />
-                      </p>
-                    </div>
-                    <div className="col-lg-4 text-center order-1 order-lg-2">
-                      <img
-                        src="assets/img/Eyes_only-1.png"
-                        alt=""
-                        className="img-fluid"
-                      />
-                    </div>
-                  </div>
-                  <div className="row justify-content-center mt-4">
-                    <button
-                      className="btn btn-primary btn-golden"
-                      onClick={() => navigate("/prose/marathi")}
-                    >
-                      Explore More
-                    </button>{" "}
-                  </div>
+                  {renderPoetryList("Marathi", "/prose/marathi")}
                 </Tab.Pane>
               </Tab.Content>
             </div>
