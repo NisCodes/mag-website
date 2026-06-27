@@ -39,65 +39,75 @@ function EyesOnly() {
 
             <div className="col-lg-9 mt-4 mt-lg-0">
               <Tab.Content>
-                {/* ENGLISH TAB OVERVIEW */}
+                
+                {/* ENGLISH TAB */}
                 <Tab.Pane eventKey="Eyes_only-tab-1">
                   <div className="row align-items-center">
-                    <div className="col-lg-8 details order-2 order-lg-1">
-                      <h3>English Literature</h3>
-                      <p className="fst-italic" style={{ color: "#ddd" }}>
-                        Dive into a curated collection of English verses, essays, and stories penned down by the students of VNIT. Explore the beautiful complexities of modern thought and classic storytelling.
+                    <div className="col-md-8 details">
+                      <h3>Vellichor</h3>
+                      <p className="fst-italic" style={{ color: "#ddd", lineHeight: "1.6" }}>
+                        (n.) the strange wistfulness of used bookstores, which are somehow infused with the passage of time—filled with thousands of old books you’ll never have time to read.
                       </p>
                     </div>
-                    <div className="col-lg-4 text-center order-1 order-lg-2">
-                      <img src="assets/img/Eyes_only-1.png" alt="English" className="img-fluid" style={{ borderRadius: "8px", maxHeight: "150px" }} />
+                    <div className="col-md-4 text-center mt-3 mt-md-0">
+                      <button 
+                        className="btn btn-primary btn-golden w-100" 
+                        onClick={() => navigate("/prose/english")}
+                        style={{ padding: "12px 20px", fontWeight: "600" }}
+                      >
+                        Explore English Compositions →
+                      </button>
                     </div>
-                  </div>
-                  <div className="row justify-content-center mt-4">
-                    <button className="btn btn-primary btn-golden" onClick={() => navigate("/prose/english")} style={{ maxWidth: "200px" }}>
-                      Explore English Compositions →
-                    </button>
                   </div>
                 </Tab.Pane>
 
-                {/* HINDI TAB OVERVIEW */}
+                {/* HINDI TAB */}
                 <Tab.Pane eventKey="Eyes_only-tab-2">
                   <div className="row align-items-center">
-                    <div className="col-lg-8 details order-2 order-lg-1">
-                      <h3>हिंदी साहित्य</h3>
-                      <p className="fst-italic" style={{ color: "#ddd" }}>
-                        मातृभाषा की मिठास और कविताओं के गहरे भाव। यहाँ आपको हमारे संस्थान के नवोदित कवियों और लेखकों की सुंदर रचनाएँ मिलेंगी।
+                    <div className="col-md-8 details">
+                      <h3>अफ़साना</h3>
+                      <p style={{ color: "#ddd", lineHeight: "1.8", whiteSpace: "pre-line" }}>
+                        अब कलम परेशाँ कातिब से क्यों लिखे वो केवल आठ पहर, क्यों रहे वो केवल एक शहर। 
+                        सपनो के शहर में क्यों न रहे ? मिथ्या की लहर में क्यों न बहे ?
+                        तो कलम पकड़ कातिब की कलाई, तोड़े अडिग समाज का ताला 
+                        जग-संसार को झूठ बताए, चलो लिखे कोई अफ़साना
                       </p>
                     </div>
-                    <div className="col-lg-4 text-center order-1 order-lg-2">
-                      <img src="assets/img/Eyes_only-1.png" alt="Hindi" className="img-fluid" style={{ borderRadius: "8px", maxHeight: "150px" }} />
+                    <div className="col-md-4 text-center mt-3 mt-md-0">
+                      <button 
+                        className="btn btn-primary btn-golden w-100" 
+                        onClick={() => navigate("/prose/hindi")}
+                        style={{ padding: "12px 20px", fontWeight: "600" }}
+                      >
+                        रचनाएँ देखें →
+                      </button>
                     </div>
-                  </div>
-                  <div className="row justify-content-center mt-4">
-                    <button className="btn btn-primary btn-golden" onClick={() => navigate("/prose/hindi")} style={{ maxWidth: "200px" }}>
-                      रचनाएँ देखें →
-                    </button>
                   </div>
                 </Tab.Pane>
 
-                {/* MARATHI TAB OVERVIEW */}
+                {/* MARATHI TAB */}
                 <Tab.Pane eventKey="Eyes_only-tab-3">
                   <div className="row align-items-center">
-                    <div className="col-lg-8 details order-2 order-lg-1">
-                      <h3>मराठी वाड्मय</h3>
-                      <p className="fst-italic" style={{ color: "#ddd" }}>
-                        मराठी साहित्याचा समृद्ध वारसा आणि विद्यार्थ्यांच्या कल्पकतेतून साकारलेल्या सुंदर कविता, चारोळ्या आणि ललित लेख.
+                    <div className="col-md-8 details">
+                      <h3>वात्सल्याचे मोती</h3>
+                      <p style={{ color: "#ddd", lineHeight: "1.8", whiteSpace: "pre-line" }}>
+                        तुटले बांध स्वप्नांचे, हरवले साज रंगांचे, दाही दिशांना आस नयनांची, 
+                        आणि खुंटलेले वस्त्र विचारांचे, मळलेला रंग मुखवट्याचा, झालेला भंग प्रेमाचा, 
+                        कथा असो कोणतीही, आला पाऊस घेऊन संच कहाण्यांचा !
                       </p>
                     </div>
-                    <div className="col-lg-4 text-center order-1 order-lg-2">
-                      <img src="assets/img/Eyes_only-1.png" alt="Marathi" className="img-fluid" style={{ borderRadius: "8px", maxHeight: "150px" }} />
+                    <div className="col-md-4 text-center mt-3 mt-md-0">
+                      <button 
+                        className="btn btn-primary btn-golden w-100" 
+                        onClick={() => navigate("/prose/marathi")}
+                        style={{ padding: "12px 20px", fontWeight: "600" }}
+                      >
+                        साहित्य वाचा →
+                      </button>
                     </div>
                   </div>
-                  <div className="row justify-content-center mt-4">
-                    <button className="btn btn-primary btn-golden" onClick={() => navigate("/prose/marathi")} style={{ maxWidth: "200px" }}>
-                      साहित्य वाचा →
-                    </button>
-                  </div>
                 </Tab.Pane>
+
               </Tab.Content>
             </div>
           </div>
