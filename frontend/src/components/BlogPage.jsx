@@ -47,7 +47,7 @@ const BlogPage = () => {
   }
   // Helper function to format the content with line breaks
   const formatContentWithLineBreaks = (text) => {
-    return text.replace(/\r\n/g, "<br />");
+    return text ? text.replace(/\r\n/g, "<br />") : "";
   };
 
   return (
@@ -88,7 +88,7 @@ const BlogPage = () => {
                 <div className="card-body" style={{backgroundColor: 'black', padding: '0.5rem' }}>
                   <h5 className="card-title" style={{color: 'goldenrod', fontSize: '1rem' }}>{blog.title}</h5>
                   <p className="card-text" style={{ fontSize: '0.875rem' }}>
-                    {blog.content.slice(0, 60)}...
+                    {blog.content ? blog.content.slice(0, 60) : "No content available"}...
                   </p>
                   <span style={{ fontSize: '0.8rem' }}>Author: {blog.author}</span>
                   <p className="card-text" style={{ fontSize: '0.8rem' }}>
