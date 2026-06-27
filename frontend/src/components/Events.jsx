@@ -17,7 +17,7 @@ const Events = () => {
     // Fetch the top 3 latest events from the backend
     const fetchEvents = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/events/get"); // Adjust endpoint as needed
+        const response = await axios.get("https://mag-backend-lime.vercel.app/events/get"); // Updated Vercel URL
         const formattedEvents = response.data.map(event => ({
           ...event,
           date: event.date.slice(0, 10) // Slicing the date here to get only the date part
