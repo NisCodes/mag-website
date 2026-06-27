@@ -18,7 +18,7 @@ const Magazine = () => {
 
     const fetchMagazines = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/magazine/get");
+        const response = await axios.get("https://mag-backend-lime.vercel.app/magazine/get");
         setMagazines(response.data);
       } catch (error) {
         console.error("Error fetching magazine data:", error);
