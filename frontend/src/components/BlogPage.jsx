@@ -79,20 +79,29 @@ const BlogPage = () => {
                 style={{ width: '18rem', borderRadius: '10px', cursor: 'pointer' }}
                 onClick={() => handleBlogClick(blog)} // Open modal on click
               >
-                <img
-                  src={`data:image/png;base64,${blog.image}`}
-                  className="card-img-top"
-                  alt={blog.title}
-                  style={{ height: '150px', objectFit: 'cover' }}
-                />
+                {blog.image ? (
+                  <img
+                    src={`data:image/png;base64,${blog.image}`}
+                    className="card-img-top"
+                    alt={blog.title}
+                    style={{ height: '150px', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <div 
+                    className="card-img-top d-flex align-items-center justify-content-center" 
+                    style={{ height: "150px", backgroundColor: "#1c1c1c", color: 'goldenrod', borderBottom: "1px solid #333" }}
+                  >
+                    <span style={{ fontSize: "1.2rem", fontWeight: "bold", fontFamily: "Georgia, serif" }}>MAG.com</span>
+                  </div>
+                )}
                 <div className="card-body" style={{backgroundColor: 'black', padding: '0.5rem' }}>
                   <h5 className="card-title" style={{color: 'goldenrod', fontSize: '1rem' }}>{blog.title}</h5>
                   <p className="card-text" style={{ fontSize: '0.875rem' }}>
                     {blog.content ? blog.content.slice(0, 60) : "No content available"}...
                   </p>
-                  <span style={{ fontSize: '0.8rem' }}>Author: {blog.author}</span>
+                  <span style={{ fontSize: '0.8rem' }}>Author: {blog.author || "Anonymous"}</span>
                   <p className="card-text" style={{ fontSize: '0.8rem' }}>
-                    <small>Date: {new Date(blog.date).toLocaleDateString()}</small>
+                    <small>Date: {blog.date ? new Date(blog.date).toLocaleDateString() : "Recent"}</small>
                   </p>
                 </div>
               </div>
@@ -107,15 +116,17 @@ const BlogPage = () => {
           <div className="blog-modal-content" style={{backgroundColor: "black"}} onClick={e => e.stopPropagation()}>
             <span className="close-modal" onClick={closeModal}>&times;</span>
             <h2 className="blog-modal-title">{selectedBlog.title}</h2>
-            <p className="blog-modal-author">Author: {selectedBlog.author}</p>
+            <p className="blog-modal-author">Author: {selectedBlog.author || "Anonymous"}</p>
             <small className="blog-modal-date">
-              Date: {new Date(selectedBlog.date).toLocaleDateString()}
+              Date: {selectedBlog.date ? new Date(selectedBlog.date).toLocaleDateString() : "Recent"}
             </small>
-            <img
-              src={`data:image/png;base64,${selectedBlog.image}`}
-              alt={selectedBlog.title}
-              className="blog-modal-image"
-            />
+            {selectedBlog.image && (
+              <img
+                src={`data:image/png;base64,${selectedBlog.image}`}
+                alt={selectedBlog.title}
+                className="blog-modal-image"
+              />
+            )}
             <p
               className="blog-modal-text"
               dangerouslySetInnerHTML={{ __html: formatContentWithLineBreaks(selectedBlog.content) }}
