@@ -62,7 +62,7 @@ function AddYourContent() {
         for (const key in formData) {
           formDataPayload.append(key, formData[key]);
         }
-        await axios.post("http://localhost:4000/blogs/post", formDataPayload);
+        await axios.post("https://mag-backend-lime.vercel.app/blogs", formDataPayload);
         setFormStatus({
           loading: false,
           success: "Your blog will be posted soon. Thankyou!",
@@ -79,7 +79,7 @@ function AddYourContent() {
         for (const key in eventData) {
           formDataPayload.append(key, eventData[key]);
         }
-        await axios.post("http://localhost:4000/poetry/post", formDataPayload);
+        await axios.post("https://mag-backend-lime.vercel.app/poetry/post", formDataPayload);
         setFormStatus({
           loading: false,
           success: "Poetry submitted successfully. Thankyou!",
