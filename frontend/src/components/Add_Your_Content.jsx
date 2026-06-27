@@ -57,12 +57,14 @@ function AddYourContent() {
     setFormStatus({ loading: true, error: "", success: "" });
 
     try {
-      const formDataPayload = new FormData();
       if (formType === "blogs") {
+        // Blogs require FormData because they handle actual image file streams
+        const formDataPayload = new FormData();
         for (const key in formData) {
           formDataPayload.append(key, formData[key]);
         }
         await axios.post("https://mag-backend-lime.vercel.app/blogs", formDataPayload);
+        
         setFormStatus({
           loading: false,
           success: "Your blog will be posted soon. Thankyou!",
@@ -76,10 +78,17 @@ function AddYourContent() {
           category: "College Life",
         });
       } else {
-        for (const key in eventData) {
-          formDataPayload.append(key, eventData[key]);
-        }
-        await axios.post("https://mag-backend-lime.vercel.app/poetry/post", formDataPayload);
+        // Poetry/Prose uses clean JSON payloads since it only processes text fields
+        const jsonPayload = {
+          title: eventData.title,
+          author: eventData.author,
+          rollno: eventData.rollno,
+          category: eventData.category,
+          content: eventData.content,
+        };
+
+        await axios.post("https://mag-backend-lime.vercel.app/poetry/post", jsonPayload);
+        
         setFormStatus({
           loading: false,
           success: "Poetry submitted successfully. Thankyou!",
@@ -114,7 +123,7 @@ function AddYourContent() {
           className={`btn btn-dark-brown ${
             formType === "blogs" ? "active" : ""
           } form-toggle-button me-2`}
-          style={{color: "white"}}
+          style={{ color: "white" }}
         >
           Blogs
         </button>
@@ -123,7 +132,7 @@ function AddYourContent() {
           className={`btn btn-dark-brown ${
             formType === "events" ? "active" : ""
           } form-toggle-button`}
-          style={{color: "white"}}
+          style={{ color: "white" }}
         >
           Poetry/Prose
         </button>
@@ -223,15 +232,19 @@ function AddYourContent() {
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="form-group mt-2">
-                <input
-                  type="file"
-                  name="image"
-                  className="form-control compact-input"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                />
-              </div>
+              
+              {/* Image upload is only shown/necessary for blog posts */}
+              {formType === "blogs" && (
+                <div className="form-group mt-2">
+                  <input
+                    type="file"
+                    name="image"
+                    className="form-control compact-input"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              )}
             </>
           )}
 
