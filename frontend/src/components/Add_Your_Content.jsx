@@ -13,7 +13,7 @@ function AddYourContent() {
     image: null,
     author: "",
     rollno: "",
-    category: "College Life",
+    category: "", // Blank default forces user to manually choose category
   });
   const [eventData, setEventData] = useState({
     title: "",
@@ -21,7 +21,7 @@ function AddYourContent() {
     image: null,
     author: "",
     rollno: "",
-    category: "English",
+    category: "", // Blank default forces user to manually choose language
   });
 
   const [formStatus, setFormStatus] = useState({
@@ -58,27 +58,31 @@ function AddYourContent() {
 
     try {
       if (formType === "blogs") {
-        // Blogs process image streams using standard multi-part FormData
         const formDataPayload = new FormData();
         for (const key in formData) {
           formDataPayload.append(key, formData[key]);
         }
         await axios.post("https://mag-backend-lime.vercel.app/blogs", formDataPayload);
         
+        // 1. Set success state first
         setFormStatus({
           loading: false,
-          success: "Your blog will be posted soon. Thankyou!",
+          error: "",
+          success: "Your blog will be posted soon. Thank you!",
         });
-        setFormData({
-          title: "",
-          content: "",
-          image: null,
-          author: "",
-          rollno: "",
-          category: "College Life",
-        });
+        
+        // 2. Clear out input boxes safely so it doesn't wipe the UI message
+        setTimeout(() => {
+          setFormData({
+            title: "",
+            content: "",
+            image: null,
+            author: "",
+            rollno: "",
+            category: "",
+          });
+        }, 500);
       } else {
-        // Poetry/Prose processes text-only attributes using standard JSON payloads
         const jsonPayload = {
           title: eventData.title,
           author: eventData.author,
@@ -89,23 +93,31 @@ function AddYourContent() {
 
         await axios.post("https://mag-backend-lime.vercel.app/poetry/post", jsonPayload);
         
+        // 1. Set success state first
         setFormStatus({
           loading: false,
+          error: "",
           success: "Poetry submitted successfully. Under Review by MAG.COM",
         });
-        setEventData({
-          title: "",
-          content: "",
-          image: null,
-          author: "",
-          rollno: "",
-          category: "English",
-        });
+
+        // 2. Clear out input boxes safely
+        setTimeout(() => {
+          setEventData({
+            title: "",
+            content: "",
+            image: null,
+            author: "",
+            rollno: "",
+            category: "",
+          });
+        }, 500);
       }
     } catch (error) {
+      console.error("Submission error details:", error);
       setFormStatus({
         loading: false,
-        error: "Error submitting the form. Please try again.",
+        success: "",
+        error: error.response?.data?.error || "Error submitting the form. Please try again.",
       });
     }
   };
@@ -202,6 +214,11 @@ function AddYourContent() {
                     onChange={handleInputChange}
                     required
                   >
+                    {/* Placeholder option acting as an unselectable default */}
+                    <option value="" disabled>
+                      {formType === "blogs" ? "Select Category" : "Select Language"}
+                    </option>
+                    
                     {formType === "blogs" ? (
                       <>
                         <option value="College Life">College Life</option>
@@ -234,7 +251,11 @@ function AddYourContent() {
               </div>
               
               {formType === "blogs" && (
-                <div className="form-group mt-2">
+                <div className="form-group mt-2 text-start">
+                  {/* Clean label informing the user about the image upload */}
+                  <label style={{ fontSize: "0.85rem", color: "#ccc", marginLeft: "5px", marginBottom: "5px" }}>
+                    Upload Cover Image (Optional)
+                  </label>
                   <input
                     type="file"
                     name="image"
@@ -255,7 +276,7 @@ function AddYourContent() {
             {formStatus.success && (
               <div className="sent-message" style={{ color: "green", fontWeight: "500" }}>{formStatus.success}</div>
             )}
-            <button type="submit" className="btn btn-dark-brown submit-button">
+            <button type="submit" className="btn btn-dark-brown submit-button mt-3">
               Submit
             </button>
           </div>
