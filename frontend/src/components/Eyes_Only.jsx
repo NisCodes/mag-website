@@ -1,78 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useNavigate } from "react-router-dom";
 import { Tab, Nav } from "react-bootstrap";
-import axios from "axios";
 import "../css/blog.css";
 
 function EyesOnly() {
-  const [poems, setPoems] = useState([]);
-  const navigate = useNavigate();
-
   useEffect(() => {
     AOS.init({ duration: 1000 });
-
-    // Fetch the poetry documents from your serverless API
-    const fetchPoetry = async () => {
-      try {
-        const response = await axios.get("https://mag-backend-lime.vercel.app/poetry/get");
-        setPoems(response.data);
-      } catch (error) {
-        console.error("Error fetching literary submissions:", error);
-      }
-    };
-    fetchPoetry();
   }, []);
 
-  // Helper function to render a list of cards dynamically based on selected language key
-  const renderPoetryList = (languageFilter, routePath) => {
-    const filteredItems = poems.filter(
-      (p) => p.category && p.category.toLowerCase() === languageFilter.toLowerCase()
-    );
-
-    if (filteredItems.length === 0) {
-      return (
-        <div className="text-center py-4" style={{ color: "#aaa" }}>
-          <p className="fst-italic">No compositions published under this language section yet.</p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="row gy-4">
-        {filteredItems.map((poem) => (
-          <div className="col-12 mb-4" key={poem.id || poem._id}>
-            <div 
-              className="p-4" 
-              style={{ 
-                backgroundColor: "rgba(20, 20, 20, 0.6)", 
-                border: "1px solid rgba(204, 164, 94, 0.2)", 
-                borderRadius: "12px" 
-              }}
-            >
-              <h3 style={{ color: "#cca45e", fontFamily: "Georgia, serif" }}>{poem.title}</h3>
-              <p style={{ color: "#aaa", fontSize: "0.85rem" }}>— Written by {poem.author} ({poem.rollno || "VNIT Member"})</p>
-              <p className="mt-3" style={{ whiteSpace: "pre-wrap", color: "#eee", lineHeight: "1.6" }}>
-                {poem.content}
-              </p>
-            </div>
-          </div>
-        ))}
-        
-        <div className="row justify-content-center mt-2">
-          <button
-            className="btn btn-primary btn-golden"
-            onClick={() => navigate(routePath)}
-            style={{ maxWidth: "200px" }}
-          >
-            Explore More
-          </button>
-        </div>
-      </div>
-    );
-  };
+  const navigate = useNavigate();
 
   return (
     <section id="Eyes_only" className="Eyes_only section">
@@ -100,16 +39,64 @@ function EyesOnly() {
 
             <div className="col-lg-9 mt-4 mt-lg-0">
               <Tab.Content>
+                {/* ENGLISH TAB OVERVIEW */}
                 <Tab.Pane eventKey="Eyes_only-tab-1">
-                  {renderPoetryList("English", "/prose/english")}
+                  <div className="row align-items-center">
+                    <div className="col-lg-8 details order-2 order-lg-1">
+                      <h3>English Literature</h3>
+                      <p className="fst-italic" style={{ color: "#ddd" }}>
+                        Dive into a curated collection of English verses, essays, and stories penned down by the students of VNIT. Explore the beautiful complexities of modern thought and classic storytelling.
+                      </p>
+                    </div>
+                    <div className="col-lg-4 text-center order-1 order-lg-2">
+                      <img src="assets/img/Eyes_only-1.png" alt="English" className="img-fluid" style={{ borderRadius: "8px", maxHeight: "150px" }} />
+                    </div>
+                  </div>
+                  <div className="row justify-content-center mt-4">
+                    <button className="btn btn-primary btn-golden" onClick={() => navigate("/prose/english")} style={{ maxWidth: "200px" }}>
+                      Explore English Compositions →
+                    </button>
+                  </div>
                 </Tab.Pane>
 
+                {/* HINDI TAB OVERVIEW */}
                 <Tab.Pane eventKey="Eyes_only-tab-2">
-                  {renderPoetryList("Hindi", "/prose/hindi")}
+                  <div className="row align-items-center">
+                    <div className="col-lg-8 details order-2 order-lg-1">
+                      <h3>हिंदी साहित्य</h3>
+                      <p className="fst-italic" style={{ color: "#ddd" }}>
+                        मातृभाषा की मिठास और कविताओं के गहरे भाव। यहाँ आपको हमारे संस्थान के नवोदित कवियों और लेखकों की सुंदर रचनाएँ मिलेंगी।
+                      </p>
+                    </div>
+                    <div className="col-lg-4 text-center order-1 order-lg-2">
+                      <img src="assets/img/Eyes_only-1.png" alt="Hindi" className="img-fluid" style={{ borderRadius: "8px", maxHeight: "150px" }} />
+                    </div>
+                  </div>
+                  <div className="row justify-content-center mt-4">
+                    <button className="btn btn-primary btn-golden" onClick={() => navigate("/prose/hindi")} style={{ maxWidth: "200px" }}>
+                      रचनाएँ देखें →
+                    </button>
+                  </div>
                 </Tab.Pane>
 
+                {/* MARATHI TAB OVERVIEW */}
                 <Tab.Pane eventKey="Eyes_only-tab-3">
-                  {renderPoetryList("Marathi", "/prose/marathi")}
+                  <div className="row align-items-center">
+                    <div className="col-lg-8 details order-2 order-lg-1">
+                      <h3>मराठी वाड्मय</h3>
+                      <p className="fst-italic" style={{ color: "#ddd" }}>
+                        मराठी साहित्याचा समृद्ध वारसा आणि विद्यार्थ्यांच्या कल्पकतेतून साकारलेल्या सुंदर कविता, चारोळ्या आणि ललित लेख.
+                      </p>
+                    </div>
+                    <div className="col-lg-4 text-center order-1 order-lg-2">
+                      <img src="assets/img/Eyes_only-1.png" alt="Marathi" className="img-fluid" style={{ borderRadius: "8px", maxHeight: "150px" }} />
+                    </div>
+                  </div>
+                  <div className="row justify-content-center mt-4">
+                    <button className="btn btn-primary btn-golden" onClick={() => navigate("/prose/marathi")} style={{ maxWidth: "200px" }}>
+                      साहित्य वाचा →
+                    </button>
+                  </div>
                 </Tab.Pane>
               </Tab.Content>
             </div>
