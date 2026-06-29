@@ -20,11 +20,12 @@ const Magazine = () => {
       try {
         const response = await axios.get("https://mag-backend-lime.vercel.app/magazine/get");
         
-        // Sort magazines alphabetically by title so they stay organized
+        // Sort magazines reverse-alphabetically (Z to A) by title string
+        // This ensures 'Insight 2026' takes priority over 'Insight 2025' natively
         const sortedData = response.data.sort((a, b) => {
           const titleA = a.title || "";
           const titleB = b.title || "";
-          return titleA.localeCompare(titleB);
+          return titleB.localeCompare(titleA);
         });
 
         setMagazines(sortedData);
@@ -51,10 +52,10 @@ const Magazine = () => {
         ) : magazines.length === 0 ? (
           <p className="text-center text-muted fst-italic">No magazines published yet.</p>
         ) : (
-          /* ONLY render Swiper when dynamic data is fully ready to prevent loop breakage */
+          /* Swiper initializes cleanly only when array data is fully ready */
           <Swiper
             modules={[Pagination, Autoplay]}
-            loop={magazines.length >= 3} // Only loop infinitely if there are enough slides to fill the layout viewport
+            loop={magazines.length >= 3} // Infinite looping safely activates if at least 3 cards exist
             speed={1200}
             autoplay={{ delay: 3500, disableOnInteraction: false }}
             slidesPerView={3}
@@ -95,7 +96,7 @@ const Magazine = () => {
                     />
                   </a>
                   
-                  {/* Clean, premium typographic layout displaying the book title */}
+                  {/* Clean, centralized title string layout underneath the book cover */}
                   <h4 
                     style={{ 
                       color: "#cca45e", 
