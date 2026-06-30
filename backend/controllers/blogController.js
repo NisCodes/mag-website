@@ -1,118 +1,84 @@
 import { db } from "../server.js";
 
+// 1. User submits a blog (Defaults to Unapproved)
 export const pushBlog = async (req, res) => {
   const formData = req.body;
-
-  const image = req.file ? req.file.buffer : null;
+  
+  // Convert uploaded file buffer to Base64 string for Firestore storage
+  const imageBase64 = req.file ? req.file.buffer.toString("base64") : null;
 
   const newBlogPost = {
-    title: formData.title,
-    content: formData.content,
-    image: image,
-    author: formData.author,
-    date: formData.date || new Date(),
-    rollno: formData.rollno,
-    category: formData.category,  // Include category field here
-    approved: false,
+    title: formData.title || "Untitled",
+    content: formData.content || "",
+    image: imageBase64,
+    author: formData.author || "Anonymous",
+    date: formData.date || new Date().toISOString(),
+    rollno: formData.rollno || "",
+    category: formData.category || "General", 
+    approved: false, // Admin must manually approve this before it goes live!
   };
 
   try {
-    await db.query(
-      `INSERT INTO blogs (title, content, image, author, date, rollno, category, approved) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-      [
-        newBlogPost.title,
-        newBlogPost.content,
-        newBlogPost.image,
-        newBlogPost.author,
-        newBlogPost.date,
-        newBlogPost.rollno,
-        newBlogPost.category,  // Pass category value
-        newBlogPost.approved,
-      ]
-    );
-    res.status(201).json({ message: "Blog post created successfully" });
+    await db.collection("blogs").add(newBlogPost);
+    res.status(201).json({ message: "Blog post submitted for approval!" });
   } catch (err) {
-    console.error(`Database error: ${err}`);
+    console.error(`Firestore error: ${err}`);
     res.status(500).json({ error: "Error creating blog post" });
   }
 };
 
+// 2. Fetch ONLY Approved blogs for the public website
 export const getBlogs = async (req, res) => {
   try {
-    const response = await db.query(
-      "SELECT * FROM blogs WHERE approved = true"
-    );
-    const blogs = response.rows.map((blog) => {
-      if (blog.image) {
-        const imageBase64 = blog.image.toString("base64");
-        return { ...blog, image: imageBase64 };
-      }
-      return blog;
-    });
+    // Only pull documents where 'approved' is strictly true
+    const snapshot = await db.collection("blogs").where("approved", "==", true).get();
+    
+    const blogs = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
     res.status(200).json(blogs);
   } catch (err) {
-    console.error(`Database error: ${err}`);
+    console.error(`Firestore error: ${err}`);
     res.status(500).json({ error: "Error fetching blogs" });
   }
 };
 
+// 3. Fetch ALL blogs (Approved & Unapproved) for Admin purposes
 export const getallBlogs = async (req, res) => {
   try {
-    const response = await db.query("SELECT * FROM blogs");
-    const blogs = response.rows.map((blog) => {
-      if (blog.image) {
-        const imageBase64 = blog.image.toString("base64");
-        return { ...blog, image: imageBase64 };
-      }
-      return blog;
-    });
-
+    const snapshot = await db.collection("blogs").get();
+    const blogs = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     res.status(200).json(blogs);
   } catch (err) {
-    console.error(`Database error: ${err}`);
-    res.status(500).json({ error: "Error fetching blogs" });
+    console.error(`Firestore error: ${err}`);
+    res.status(500).json({ error: "Error fetching all blogs" });
   }
 };
 
-export const deleteBlog = async (req, res) => {
-  try {
-    const result = await db.query("SELECT * FROM blogs WHERE id = $1", [
-      req.params.id,
-    ]);
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Blog not found" });
-    }
-
-    await db.query("DELETE FROM blogs WHERE id = $1", [req.params.id]);
-
-    res.status(200).json({ message: "Blog deleted successfully" });
-  } catch (err) {
-    console.error(`Database error: ${err}`);
-    res
-      .status(500)
-      .json({ error: "An error occurred while deleting the blog" });
-  }
-};
-
+// 4. Admin Approves a Blog
 export const approveBlog = async (req, res) => {
   try {
-    const result = await db.query(
-      "UPDATE blogs SET approved = true WHERE id = $1 RETURNING *",
-      [req.params.id]
-    );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Blog not found" });
-    }
-    res
-      .status(200)
-      .json({ message: "Blog approved successfully", blog: result.rows[0] });
+    // Flips the 'approved' boolean to true
+    await db.collection("blogs").doc(req.params.id).update({ approved: true });
+    res.status(200).json({ message: "Blog approved successfully" });
   } catch (err) {
-    console.error(`Database error: ${err}`);
-    res
-      .status(500)
-      .json({ error: "An error occurred while approving the blog" });
+    console.error(`Firestore error: ${err}`);
+    res.status(500).json({ error: "An error occurred while approving the blog" });
+  }
+};
+
+// 5. Admin Deletes a Blog
+export const deleteBlog = async (req, res) => {
+  try {
+    await db.collection("blogs").doc(req.params.id).delete();
+    res.status(200).json({ message: "Blog deleted successfully" });
+  } catch (err) {
+    console.error(`Firestore error: ${err}`);
+    res.status(500).json({ error: "An error occurred while deleting the blog" });
   }
 };
