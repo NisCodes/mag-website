@@ -12,15 +12,22 @@ const KarwaanHighlight = () => {
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
+  }, []);
 
+  useEffect(() => {
     if (isWindowOpen) {
       const fetchKarwaanData = async () => {
+        setLoading(true);
         try {
-          // Put your custom backend router endpoint here
           const response = await axios.get("https://mag-backend-lime.vercel.app/karwaan/get");
           
-          // Sort chronologically so the newest flagship year sits on top
-          const sorted = response.data.sort((a, b) => b.year.localeCompare(a.year));
+          // Sort automatically so the newest/latest flagship year sits cleanly on top
+          const sorted = response.data.sort((a, b) => {
+            const yearA = String(a.year || "");
+            const yearB = String(b.year || "");
+            return yearB.localeCompare(yearA);
+          });
+          
           setEditions(sorted);
         } catch (error) {
           console.error("Error loading Karwaan records:", error);
@@ -29,10 +36,11 @@ const KarwaanHighlight = () => {
         }
       };
       fetchKarwaanData();
-      document.body.style.overflow = "hidden"; // Lock page scroll behind the modal window
+      document.body.style.overflow = "hidden"; // Lock background page scroll
     } else {
       document.body.style.overflow = "unset";
     }
+    return () => { document.body.style.overflow = "unset"; };
   }, [isWindowOpen]);
 
   const toggleExpand = (id) => {
@@ -41,13 +49,14 @@ const KarwaanHighlight = () => {
 
   return (
     <>
-      {/* 1. Flagship Massive Section Banner on Main Page */}
+      {/* 1. Grand Main Page Highlight Banner Section */}
       <section 
         id="karwaan-highlight" 
         className="py-5" 
         style={{ 
-          background: "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('assets/img/karwaan-bg.jpg') no-repeat center center/cover",
-          borderY: "2px solid #cca45e"
+          background: "linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.92)), url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover",
+          borderTop: "2px solid #cca45e",
+          borderBottom: "2px solid #cca45e"
         }}
       >
         <div className="container text-center py-5" data-aos="zoom-in">
@@ -58,15 +67,17 @@ const KarwaanHighlight = () => {
           </p>
           <button 
             className="btn px-4 py-2" 
-            style={{ backgroundColor: "#cca45e", color: "#000", fontWeight: "600", border: "none", borderRadius: "30px" }}
+            style={{ backgroundColor: "#cca45e", color: "#000", fontWeight: "600", border: "none", borderRadius: "30px", transition: "transform 0.2s" }}
             onClick={() => setIsWindowOpen(true)}
+            onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
+            onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
           >
             Explore Fest Archives
           </button>
         </div>
       </section>
 
-      {/* 2. Separate Full-Screen Interactive Window Window */}
+      {/* 2. Interactive Full-Screen Window Content Overlay */}
       {isWindowOpen && (
         <div 
           className="karwaan-window-overlay"
@@ -76,61 +87,79 @@ const KarwaanHighlight = () => {
           }}
         >
           <div className="container position-relative" style={{ maxWidth: "800px" }}>
-            {/* Close Utility Cross */}
+            {/* Elegant Close Button */}
             <span 
               onClick={() => setIsWindowOpen(false)}
-              style={{ position: "absolute", top: "-10px", right: "10px", color: "#cca45e", fontSize: "2.5rem", cursor: "pointer" }}
+              style={{ position: "absolute", top: "-10px", right: "10px", color: "#cca45e", fontSize: "2.5rem", cursor: "pointer", zIndex: 1100 }}
             >
               &times;
             </span>
 
-            <div className="text-center mb-5">
-              <h2 style={{ color: "#cca45e", fontFamily: "Georgia, serif" }}>Karwaan Chronology</h2>
-              <p className="text-muted small">Flip through history edition by edition</p>
+            <div className="text-center mb-5 mt-3">
+              <h1 style={{ color: "#cca45e", fontFamily: "Georgia, serif", fontWeight: "bold", letterSpacing: "1px" }}>The Karwaan Story</h1>
+              <p className="text-muted small">Journey through our chapters, starting from the latest edition</p>
             </div>
 
             {loading ? (
-              <p className="text-center text-muted fst-italic">Unrolling festival scrolls...</p>
+              <p className="text-center text-muted fst-italic my-5">Unrolling the festival scrolls...</p>
+            ) : editions.length === 0 ? (
+              <div className="text-center text-muted my-5">
+                <p className="fst-italic">No experimental data picked up from Firestore yet.</p>
+                <p className="small text-secondary">Verify that your Firestore collection is named exactly 'karwaan' and your backend is successfully redeployed.</p>
+              </div>
             ) : (
               <div className="karwaan-blocks-wrapper">
                 {editions.map((edition) => (
                   <div 
                     key={edition.id}
-                    className="mb-4 p-3"
+                    className="mb-4 p-4"
                     style={{ 
-                      backgroundColor: "#111", border: "1px solid rgba(204,164,94,0.2)", borderRadius: "8px",
-                      transition: "all 0.3s ease"
+                      backgroundColor: "rgba(20, 20, 20, 0.6)", 
+                      border: "1px solid rgba(204, 164, 94, 0.2)", 
+                      borderRadius: "12px",
+                      boxShadow: "0 4px 15px rgba(0,0,0,0.5)"
                     }}
                   >
-                    {/* Header: Always visible */}
+                    {/* Header Row */}
                     <div 
-                      className="d-flex align-items-center justify-content-between style-pointer" 
+                      className="d-flex align-items-center justify-content-between" 
                       onClick={() => toggleExpand(edition.id)}
                       style={{ cursor: "pointer" }}
                     >
-                      <h4 style={{ color: "#fff", margin: 0, fontSize: "1.3rem" }}>{edition.year}</h4>
-                      <span style={{ color: "#cca45e", fontSize: "1.2rem" }}>
-                        {expandedId === edition.id ? "▲ Collapse" : "▼ View More"}
-                      </span>
+                      <h3 style={{ color: "#cca45e", margin: 0, fontFamily: "Georgia, serif", fontSize: "1.4rem" }}>
+                        {edition.year}
+                      </h3>
+                      <button 
+                        className="btn btn-sm" 
+                        style={{ border: "1px solid #cca45e", color: "#cca45e", borderRadius: "20px", fontSize: "0.8rem" }}
+                      >
+                        {expandedId === edition.id ? "▲ Collapse Story" : "▼ View Full Story"}
+                      </button>
                     </div>
 
                     {/* Condensed View Content */}
-                    <p className="text-muted mt-2 mb-0" style={{ fontSize: "0.95rem" }}>
-                      {edition.summary}
+                    <p className="text-light mt-3 mb-1" style={{ fontSize: "1rem", lineHeight: "1.5" }}>
+                      {edition.summary || "Summary text placeholder."}
                     </p>
 
                     {/* Expandable Extended Details Panel */}
                     {expandedId === edition.id && (
-                      <div className="mt-4 pt-3 border-top border-secondary" data-aos="fade-down" data-aos-duration="400">
-                        <div className="row">
+                      <div className="mt-4 pt-3 border-top border-secondary animate-fade-in">
+                        <div className="row align-items-center">
                           {edition.coverUrl && (
-                            <div className="col-md-4 mb-3">
-                              <img src={edition.coverUrl} className="img-fluid rounded" alt="Poster" style={{ maxHeight: "200px", objectFit: "cover" }} />
+                            <div className="col-md-4 mb-3 mb-md-0">
+                              <img 
+                                src={edition.coverUrl} 
+                                className="img-fluid rounded shadow-sm" 
+                                alt={`${edition.year} poster`} 
+                                style={{ width: "100%", maxHeight: "250px", objectFit: "cover" }} 
+                              />
                             </div>
                           )}
                           <div className={edition.coverUrl ? "col-md-8" : "col-12"}>
+                            <h5 style={{ color: "#cca45e", fontSize: "1rem", textTransform: "uppercase", letterSpacing: "1px" }}>Festival Chronicle</h5>
                             <p style={{ color: "#ddd", whiteSpace: "pre-line", fontSize: "0.95rem", lineHeight: "1.6" }}>
-                              {edition.details}
+                              {edition.details || "Detailed documentation text placeholder."}
                             </p>
                           </div>
                         </div>
