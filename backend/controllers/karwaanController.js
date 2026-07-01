@@ -1,21 +1,20 @@
 import { db } from "../server.js";
 
-// Upload a new Karwaan event
+// 1. Upload a new Karwaan event
 export const pushKarwaan = async (req, res) => {
   const formData = req.body;
   
-  // Convert image buffer to base64 string to match your Magazine setup
-  const imageBase64 = req.file ? req.file.buffer.toString("base64") : null;
+  // Convert image buffer to Base64 string to match Magazine setup
+  const imageBase64 = req.file ? req.file.buffer.toString("base64") : "";
 
   const newKarwaanPost = {
-    year: formData.year || "Karwaan Edition", // Equivalent to title/edition
-    driveLink: formData.driveLink || "",      // Your requested Google Drive link
+    year: formData.year || "", 
+    driveLink: formData.driveLink || "", 
     image: imageBase64,
     date: formData.date || new Date().toISOString(),
   };
 
   try {
-    // Add to Firestore collection
     await db.collection("karwaan").add(newKarwaanPost);
     res.status(201).json({ message: "Karwaan edition added successfully" });
   } catch (err) {
@@ -24,7 +23,7 @@ export const pushKarwaan = async (req, res) => {
   }
 };
 
-// Fetch all Karwaan events
+// 2. Fetch all Karwaan events
 export const getKarwaan = async (req, res) => {
   try {
     const snapshot = await db.collection("karwaan").get();
@@ -40,7 +39,7 @@ export const getKarwaan = async (req, res) => {
   }
 };
 
-// Delete a Karwaan event
+// 3. Delete a Karwaan event
 export const deleteKarwaan = async (req, res) => {
   try {
     const docRef = db.collection("karwaan").doc(req.params.id);
