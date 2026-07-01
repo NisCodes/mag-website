@@ -3,7 +3,6 @@ import { db } from "../server.js";
 
 const router = express.Router();
 
-// GET all festival data arrays natively from Firestore
 router.get("/get", async (req, res) => {
   try {
     const snapshot = await db.collection("karwaan").get();
@@ -13,6 +12,7 @@ router.get("/get", async (req, res) => {
     }));
     res.status(200).json(records);
   } catch (err) {
+    console.error("Error fetching Karwaan data:", err);
     res.status(500).json({ error: "Failed to grab Karwaan documentation" });
   }
 });
