@@ -1,20 +1,14 @@
 import express from "express";
-import { db } from "../server.js";
+import {
+  getKarwaan,
+  deleteKarwaan,
+  pushKarwaan,
+} from "../controllers/karwaanController.js";
 
 const router = express.Router();
 
-router.get("/get", async (req, res) => {
-  try {
-    const snapshot = await db.collection("karwaan").get();
-    const records = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-    res.status(200).json(records);
-  } catch (err) {
-    console.error("Error fetching Karwaan data:", err);
-    res.status(500).json({ error: "Failed to grab Karwaan documentation" });
-  }
-});
+router.post("/post", pushKarwaan);
+router.get("/get", getKarwaan);
+router.delete("/delete/:id", deleteKarwaan);
 
 export { router as karwaanRouter };
