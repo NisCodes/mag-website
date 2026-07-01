@@ -4,6 +4,7 @@ import { HelmetProvider } from "react-helmet-async";
 import HeadComponent from "./components/HeadComponent.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Section from "./components/Section.jsx";
+import KarwaanHighlight from "./components/KarwaanHighlight.jsx"; // Imported our flagship fest component
 import Events from "./components/Events.jsx";
 import Magazine from "./components/Magazine.jsx";
 import BlogSection from "./components/Blogs_VNIT.jsx";
@@ -31,6 +32,8 @@ function MainLayout() {
             element={
               <>
                 <Section />
+                {/* Karwaan sits right here to capture immediate audience attention */}
+                <KarwaanHighlight /> 
                 <Events />
                 <Magazine />
                 <BlogSection />
