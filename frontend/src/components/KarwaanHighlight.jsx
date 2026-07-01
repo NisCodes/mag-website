@@ -22,12 +22,13 @@ const KarwaanHighlight = () => {
       const fetchKarwaanData = async () => {
         setLoading(true);
         try {
+          // Pointing to your live Vercel backend
           const response = await axios.get("https://mag-backend-lime.vercel.app/karwaan/get");
           
-          // Sort so newest year is first
+          // Sort chronologically (newest year first)
           const sortedData = response.data.sort((a, b) => {
-            const yearA = a.year || "";
-            const yearB = b.year || "";
+            const yearA = String(a.year || "");
+            const yearB = String(b.year || "");
             return yearB.localeCompare(yearA);
           });
 
@@ -38,11 +39,13 @@ const KarwaanHighlight = () => {
           setLoading(false);
         }
       };
+      
       fetchKarwaanData();
-      document.body.style.overflow = "hidden"; // Lock background scroll
+      document.body.style.overflow = "hidden"; // Locks background scroll
     } else {
       document.body.style.overflow = "unset";
     }
+    
     return () => { document.body.style.overflow = "unset"; };
   }, [isWindowOpen]);
 
@@ -74,7 +77,7 @@ const KarwaanHighlight = () => {
         </div>
       </section>
 
-      {/* 2. Swiper Carousel Modal (Matches Magazine) */}
+      {/* 2. Magazine-Style Swiper Modal */}
       {isWindowOpen && (
         <div 
           className="karwaan-window-overlay"
@@ -129,20 +132,24 @@ const KarwaanHighlight = () => {
                       }}
                     >
                       <a href={edition.driveLink} target="_blank" rel="noopener noreferrer" className="d-block mb-3 overflow-hidden rounded">
+                        {/* Fallback Image Logic prevents broken icons when DB image is empty */}
                         <img
-                          src={`data:image/jpeg;base64,${edition.image}`}
+                          src={edition.image ? `data:image/jpeg;base64,${edition.image}` : "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80"}
                           className="magazine-img img-fluid"
                           alt={edition.year || "Karwaan Cover"}
                           style={{ 
                             maxHeight: "360px", 
                             objectFit: "cover",
                             borderRadius: "8px",
-                            width: "100%"
+                            width: "100%",
+                            transition: "transform 0.3s ease"
                           }}
+                          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.03)")}
+                          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
                         />
                       </a>
                       <h4 style={{ color: "#cca45e", fontFamily: "Georgia, serif", fontSize: "1.15rem", marginTop: "10px" }}>
-                        {edition.year || "Karwaan Edition"}
+                        {edition.year ? `Karwaan ${edition.year}` : "Karwaan Edition"}
                       </h4>
                     </div>
                   </SwiperSlide>
