@@ -3,7 +3,6 @@ import cors from "cors";
 import env from "dotenv";
 import multer from "multer"; 
 import admin from "firebase-admin"; // 1. Import Firebase Admin instead of pg
-
 // Import all your routers
 import { blogRouter } from "./routers/blogRouter.js";
 import { galleryRouter } from "./routers/galleryRouter.js";
@@ -21,11 +20,9 @@ env.config();
 // Make sure your .env has the path to your service account credentials file
 import fs from "fs";
 const serviceAccount = JSON.parse(fs.readFileSync(process.env.FIREBASE_SERVICE_ACCOUNT).toString());
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
-
 const db = admin.firestore(); // This is the real Firestore instance!
 
 app.use(cors());
@@ -41,6 +38,7 @@ app.post("/gallery/post", upload.single("image"), (req, res, next) => { next(); 
 app.post("/poetry/post", upload.single("image"), (req, res, next) => { next(); });
 app.post("/events/post", upload.single("image"), (req, res, next) => { next(); });
 app.post("/magazine/post", upload.single("image"), (req, res, next) => { next(); });
+app.post("/karwaan/post", upload.single("image"), (req, res, next) => { next(); }); // ✅ added — this was missing
 
 // 4. Mount all routers (including your new Karwaan route)
 app.use("/blogs", blogRouter);
