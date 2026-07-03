@@ -27,7 +27,7 @@ export default function KarwaanSection() {
       {/* 1. Main Landing Aspect Banner (Reference: image_cf6c02.jpg) */}
       <div className="karwaan-banner" style={{ maxWidth: '1000px', margin: '0 auto 30px auto', border: '1px solid #333', borderRadius: '8px', overflow: 'hidden' }}>
         <img 
-          src="/image_cf6c02.jpg" // Place your banner image in the frontend/public folder named exactly this
+          src="/image_cf6c02.jpeg" // Place your banner image in the frontend/public folder named exactly this
           alt="Karwaan Banner" 
           style={{ width: '100%', height: 'auto', display: 'block' }} 
         />
