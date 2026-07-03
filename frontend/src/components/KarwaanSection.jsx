@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// Reordered year-wise: Newest to Oldest
 const karwaanEditions = [
   {
     id: 1,
@@ -33,7 +32,10 @@ export default function KarwaanSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
-    if (currentIndex < karwaanEditions.length - 2) {
+    // Limits scrolling appropriately based on viewport conditions
+    const isMobile = window.innerWidth <= 768;
+    const maxIndex = isMobile ? karwaanEditions.length - 1 : karwaanEditions.length - 2;
+    if (currentIndex < maxIndex) {
       setCurrentIndex(currentIndex + 1);
     }
   };
@@ -44,24 +46,45 @@ export default function KarwaanSection() {
     }
   };
 
-  return (
-    <section className="karwaan-section" style={{ width: '100%', backgroundColor: '#000', color: '#fff', textAlign: 'center', fontFamily: 'sans-serif', paddingBottom: '40px' }}>
-      
-     {/* 1. Left-aligned, Sentence-case Heading at the Top */}
-<h2 style={{ 
-  fontSize: '32px', 
-  color: '#d4af37', 
-  paddingTop: '40px', 
-  paddingLeft: '20px',
-  marginBottom: '25px', 
-  fontWeight: 'bold', 
-  letterSpacing: '0.5px', 
-  textAlign: 'left'
-}}>
-  Explore Karwaan
-</h2>
+  const isMobile = window.innerWidth <= 768;
+  const showRightArrow = currentIndex < (isMobile ? karwaanEditions.length - 1 : karwaanEditions.length - 2);
 
-      {/* 2. Main Landing Banner */}
+  return (
+    <section className="karwaan-section" style={{ width: '100%', backgroundColor: '#000', color: '#fff', textAlign: 'center', paddingBottom: '40px' }}>
+      
+      {/* Injecting CSS dynamically to control mobile vs desktop widths */}
+      <style>{`
+        .karwaan-track {
+          display: flex;
+          transition: transform 0.4s ease-in-out;
+          width: ${karwaanEditions.length * 50}%;
+        }
+        .karwaan-card-wrapper {
+          width: ${100 / karwaanEditions.length}%;
+          padding: 0 15px;
+          box-sizing: border-box;
+        }
+        @media (max-width: 768px) {
+          .karwaan-track {
+            width: ${karwaanEditions.length * 100}%;
+            transform: translateX(-${currentIndex * (100 / karwaanEditions.length)}%) !important;
+          }
+          .karwaan-card-wrapper {
+            width: ${100 / karwaanEditions.length}%;
+            padding: 0 5px;
+          }
+          .karwaan-card-img {
+            aspect-ratio: 1/1 !important; /* Square layout fits standard mobile frames much better */
+          }
+        }
+      `}</style>
+
+      {/* 1. Left-aligned Heading inheriting parent font aesthetics */}
+      <h2 style={{ fontSize: '32px', color: '#d4af37', paddingTop: '40px', paddingLeft: '20px', marginBottom: '25px', fontWeight: 'bold', letterSpacing: '0.5px', textAlign: 'left' }}>
+        Explore Karwaan
+      </h2>
+
+      {/* 2. Main Landing Full-width Banner */}
       <div className="karwaan-banner" style={{ width: '100%', margin: '0 0 40px 0', overflow: 'hidden' }}>
         <img 
           src="/image_cf6c02.jpeg" 
@@ -70,9 +93,12 @@ export default function KarwaanSection() {
         />
       </div>
 
-      {/* 3. Toggle Button */}
+      {/* 3. Toggle Action Button */}
       <button 
-        onClick={() => setShowMore(!showMore)}
+        onClick={() => {
+          setShowMore(!showMore);
+          setCurrentIndex(0);
+        }}
         style={{
           padding: '12px 30px',
           fontSize: '16px',
@@ -89,43 +115,34 @@ export default function KarwaanSection() {
         {showMore ? 'Show Less' : 'Explore Karwaan Editions'}
       </button>
 
-      {/* 4. Sliding Viewport Segment */}
+      {/* 4. Completely Responsive Carousel Frame */}
       {showMore && (
-        <div style={{ position: 'relative', width: '100%', maxWidth: '1400px', margin: '0 auto', padding: '0 60px', boxSizing: 'border-box' }}>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '1400px', margin: '0 auto', padding: '0 50px', boxSizing: 'border-box' }}>
           
-          {/* Left Arrow Button */}
+          {/* Left Navigation Arrow */}
           <button 
             onClick={prevSlide}
             disabled={currentIndex === 0}
             style={{
-              position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)',
+              position: 'absolute', left: '5px', top: '50%', transform: 'translateY(-50%)',
               backgroundColor: currentIndex === 0 ? '#222' : '#d4af37',
-              color: '#000', border: 'none', width: '45px', height: '45px', borderRadius: '50%',
-              cursor: currentIndex === 0 ? 'not-allowed' : 'pointer', fontWeight: 'bold', fontSize: '24px', zIndex: 10
+              color: '#000', border: 'none', width: '40px', height: '40px', borderRadius: '50%',
+              cursor: currentIndex === 0 ? 'not-allowed' : 'pointer', fontWeight: 'bold', fontSize: '22px', zIndex: 10
             }}
           >
             &#8249;
           </button>
 
-          {/* Wrapper for the cards track */}
+          {/* Core Viewport Slider Window */}
           <div style={{ overflow: 'hidden', width: '100%' }}>
             <div 
+              className="karwaan-track"
               style={{
-                display: 'flex',
-                transform: `translateX(-${currentIndex * 50}%)`,
-                transition: 'transform 0.4s ease-in-out',
-                width: `${(karwaanEditions.length * 50)}%`
+                transform: `translateX(-${currentIndex * 50}%)`
               }}
             >
               {karwaanEditions.map((edition) => (
-                <div 
-                  key={edition.id} 
-                  style={{
-                    width: `${100 / karwaanEditions.length}%`,
-                    padding: '0 15px',
-                    boxSizing: 'border-box'
-                  }}
-                >
+                <div key={edition.id} className="karwaan-card-wrapper">
                   <div 
                     style={{
                       backgroundColor: '#111',
@@ -136,8 +153,8 @@ export default function KarwaanSection() {
                       textAlign: 'center'
                     }}
                   >
-                    {/* Responsive Image with Fixed Aspect Ratio to prevent squishing */}
                     <img 
+                      className="karwaan-card-img"
                       src={edition.coverImage} 
                       alt={edition.year} 
                       style={{ 
@@ -147,9 +164,9 @@ export default function KarwaanSection() {
                         objectFit: 'cover' 
                       }}
                     />
-                    <div style={{ padding: '25px' }}>
-                      <h3 style={{ margin: '0 0 10px 0', color: '#d4af37', fontSize: '22px' }}>{edition.year}</h3>
-                      <p style={{ color: '#ccc', fontSize: '18px', fontWeight: '500', margin: '0 0 20px 0' }}>
+                    <div style={{ padding: '20px' }}>
+                      <h3 style={{ margin: '0 0 10px 0', color: '#d4af37', fontSize: '20px' }}>{edition.year}</h3>
+                      <p style={{ color: '#ccc', fontSize: '16px', fontWeight: '500', margin: '0 0 20px 0' }}>
                         {edition.tagline}
                       </p>
                       
@@ -183,15 +200,15 @@ export default function KarwaanSection() {
             </div>
           </div>
 
-          {/* Right Arrow Button */}
+          {/* Right Navigation Arrow */}
           <button 
             onClick={nextSlide}
-            disabled={currentIndex >= karwaanEditions.length - 2}
+            disabled={!showRightArrow}
             style={{
-              position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
-              backgroundColor: currentIndex >= karwaanEditions.length - 2 ? '#222' : '#d4af37',
-              color: '#000', border: 'none', width: '45px', height: '45px', borderRadius: '50%',
-              cursor: currentIndex >= karwaanEditions.length - 2 ? 'not-allowed' : 'pointer', fontWeight: 'bold', fontSize: '24px', zIndex: 10
+              position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)',
+              backgroundColor: !showRightArrow ? '#222' : '#d4af37',
+              color: '#000', border: 'none', width: '40px', height: '40px', borderRadius: '50%',
+              cursor: !showRightArrow ? 'not-allowed' : 'pointer', fontWeight: 'bold', fontSize: '22px', zIndex: 10
             }}
           >
             &#8250;
