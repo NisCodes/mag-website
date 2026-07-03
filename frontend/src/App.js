@@ -32,12 +32,13 @@ function MainLayout() {
             element={
               <>
                 <Section />
-                <Events />
-                <Magazine />
                 <KarwaanSection />
+                <Magazine />
+                
                 <BlogSection />
                 <EyesOnly />
                 <AddYourContent />
+                <Events />
                 <Gallery />
                 <Team />
                 <Contact />
