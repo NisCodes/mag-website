@@ -4,7 +4,7 @@ import { HelmetProvider } from "react-helmet-async";
 import HeadComponent from "./components/HeadComponent.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Section from "./components/Section.jsx";
-
+import KarwaanSection from "./components/KarwaanSection.jsx";
 import Events from "./components/Events.jsx";
 import Magazine from "./components/Magazine.jsx";
 import BlogSection from "./components/Blogs_VNIT.jsx";
@@ -34,6 +34,7 @@ function MainLayout() {
                 <Section />
                 <Events />
                 <Magazine />
+                <KarwaanSection />
                 <BlogSection />
                 <EyesOnly />
                 <AddYourContent />
