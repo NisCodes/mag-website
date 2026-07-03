@@ -47,10 +47,19 @@ export default function KarwaanSection() {
   return (
     <section className="karwaan-section" style={{ width: '100%', backgroundColor: '#000', color: '#fff', textAlign: 'center', fontFamily: 'sans-serif', paddingBottom: '40px' }}>
       
-      {/* 1. Gold Section Heading at the Top */}
-      <h2 style={{ fontSize: '36px', color: '#d4af37', paddingTop: '40px', marginBottom: '25px', fontWeight: 'bold', letterSpacing: '2px', textTransform: 'uppercase' }}>
-        Explore Karwaan
-      </h2>
+     {/* 1. Left-aligned, Sentence-case Heading at the Top */}
+<h2 style={{ 
+  fontSize: '32px', 
+  color: '#d4af37', 
+  paddingTop: '40px', 
+  paddingLeft: '20px',
+  marginBottom: '25px', 
+  fontWeight: 'bold', 
+  letterSpacing: '0.5px', 
+  textAlign: 'left'
+}}>
+  Explore Karwaan
+</h2>
 
       {/* 2. Main Landing Banner */}
       <div className="karwaan-banner" style={{ width: '100%', margin: '0 0 40px 0', overflow: 'hidden' }}>
