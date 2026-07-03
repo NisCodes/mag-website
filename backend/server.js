@@ -10,7 +10,7 @@ import { messageRouter } from "./routers/messageRouter.js";
 import { poetryRouter } from "./routers/poetryRouter.js";
 import { eventRouter } from "./routers/eventRouter.js";
 import { magazineRouter } from "./routers/magazineRouter.js";
-import { karwaanRouter } from "./routers/karwaanRouter.js"; // 2. Import Karwaan router
+
 
 const app = express();
 const port = 4000;
@@ -38,7 +38,7 @@ app.post("/gallery/post", upload.single("image"), (req, res, next) => { next(); 
 app.post("/poetry/post", upload.single("image"), (req, res, next) => { next(); });
 app.post("/events/post", upload.single("image"), (req, res, next) => { next(); });
 app.post("/magazine/post", upload.single("image"), (req, res, next) => { next(); });
-app.post("/karwaan/post", upload.single("image"), (req, res, next) => { next(); }); // ✅ added — this was missing
+
 
 // 4. Mount all routers (including your new Karwaan route)
 app.use("/blogs", blogRouter);
@@ -47,7 +47,6 @@ app.use("/messages", messageRouter);
 app.use("/poetry", poetryRouter);
 app.use("/events", eventRouter);
 app.use("/magazine", magazineRouter);
-app.use("/karwaan", karwaanRouter); // 5. Karwaan is now officially active!
 
 export { db };
 
