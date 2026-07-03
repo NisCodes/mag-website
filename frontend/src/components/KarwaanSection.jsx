@@ -44,11 +44,11 @@ export default function KarwaanSection() {
     }
   };
 
- return (
+  return (
     <section className="karwaan-section" style={{ width: '100%', backgroundColor: '#000', color: '#fff', textAlign: 'center', fontFamily: 'sans-serif', paddingBottom: '40px' }}>
       
       {/* 1. Gold Section Heading at the Top */}
-      <h2 style={{ fontSize: '36px', color: '#d4af37', marginTop: '40px', marginBottom: '25px', fontWeight: 'bold', letterSpacing: '2px', textTransform: 'uppercase' }}>
+      <h2 style={{ fontSize: '36px', color: '#d4af37', paddingTop: '40px', marginBottom: '25px', fontWeight: 'bold', letterSpacing: '2px', textTransform: 'uppercase' }}>
         Explore Karwaan
       </h2>
 
@@ -64,8 +64,23 @@ export default function KarwaanSection() {
       {/* 3. Toggle Button */}
       <button 
         onClick={() => setShowMore(!showMore)}
+        style={{
+          padding: '12px 30px',
+          fontSize: '16px',
+          backgroundColor: '#d4af37', 
+          color: '#000',
+          border: 'none',
+          borderRadius: '25px',
+          cursor: 'pointer',
+          fontWeight: 'bold',
+          transition: 'all 0.3s ease',
+          marginBottom: '40px'
+        }}
+      >
+        {showMore ? 'Show Less' : 'Explore Karwaan Editions'}
+      </button>
 
-      {/* Sliding Viewport Segment */}
+      {/* 4. Sliding Viewport Segment */}
       {showMore && (
         <div style={{ position: 'relative', width: '100%', maxWidth: '1400px', margin: '0 auto', padding: '0 60px', boxSizing: 'border-box' }}>
           
@@ -112,10 +127,16 @@ export default function KarwaanSection() {
                       textAlign: 'center'
                     }}
                   >
+                    {/* Responsive Image with Fixed Aspect Ratio to prevent squishing */}
                     <img 
                       src={edition.coverImage} 
                       alt={edition.year} 
-                      style={{ width: '100%', height: '380px', objectFit: 'cover' }}
+                      style={{ 
+                        width: '100%', 
+                        height: 'auto', 
+                        aspectRatio: '16/10', 
+                        objectFit: 'cover' 
+                      }}
                     />
                     <div style={{ padding: '25px' }}>
                       <h3 style={{ margin: '0 0 10px 0', color: '#d4af37', fontSize: '22px' }}>{edition.year}</h3>
