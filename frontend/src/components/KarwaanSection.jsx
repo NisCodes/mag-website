@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 
+// Reordered year-wise: Newest to Oldest
 const karwaanEditions = [
   {
     id: 1,
-    year: "Karwaan '24",
-    tagline: "कहानी",
-    coverImage: "/karwaan2024.jpeg",
-    driveLink: "https://drive.google.com/your-link-here-2024",
-    isComingSoon: false
+    year: "Karwaan '26",
+    tagline: "Coming Soon...",
+    coverImage: "/karwaan2026.jpeg",
+    driveLink: "#",
+    isComingSoon: true
   },
   {
     id: 2,
@@ -19,11 +20,11 @@ const karwaanEditions = [
   },
   {
     id: 3,
-    year: "Karwaan '26",
-    tagline: "Coming Soon...",
-    coverImage: "/karwaan2026.jpeg",
-    driveLink: "#",
-    isComingSoon: true
+    year: "Karwaan '24",
+    tagline: "कहानी",
+    coverImage: "/karwaan2024.jpeg",
+    driveLink: "https://drive.google.com/your-link-here-2024",
+    isComingSoon: false
   }
 ];
 
@@ -31,7 +32,6 @@ export default function KarwaanSection() {
   const [showMore, setShowMore] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Slide navigation handlers
   const nextSlide = () => {
     if (currentIndex < karwaanEditions.length - 2) {
       setCurrentIndex(currentIndex + 1);
@@ -77,23 +77,23 @@ export default function KarwaanSection() {
 
       {/* Sliding Viewport Segment */}
       {showMore && (
-        <div style={{ position: 'relative', maxWidth: '900px', margin: '0 auto', padding: '0 50px' }}>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '1400px', margin: '0 auto', padding: '0 60px', boxSizing: 'border-box' }}>
           
           {/* Left Arrow Button */}
           <button 
             onClick={prevSlide}
             disabled={currentIndex === 0}
             style={{
-              position: 'absolute', left: '0', top: '50%', transform: 'translateY(-50%)',
+              position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)',
               backgroundColor: currentIndex === 0 ? '#222' : '#d4af37',
-              color: '#000', border: 'none', width: '40px', height: '40px', borderRadius: '50%',
-              cursor: currentIndex === 0 ? 'not-allowed' : 'pointer', fontWeight: 'bold', fontSize: '20px', zIndex: 10
+              color: '#000', border: 'none', width: '45px', height: '45px', borderRadius: '50%',
+              cursor: currentIndex === 0 ? 'not-allowed' : 'pointer', fontWeight: 'bold', fontSize: '24px', zIndex: 10
             }}
           >
             &#8249;
           </button>
 
-          {/* Wrapper for the cards track */}
+          {/* Wrapper for the cards track - Expanded width */}
           <div style={{ overflow: 'hidden', width: '100%' }}>
             <div 
               style={{
@@ -125,10 +125,10 @@ export default function KarwaanSection() {
                     <img 
                       src={edition.coverImage} 
                       alt={edition.year} 
-                      style={{ width: '100%', height: '240px', objectFit: 'cover' }}
+                      style={{ width: '100%', height: '380px', objectFit: 'cover' }} // Taller image size for wider screens
                     />
-                    <div style={{ padding: '20px' }}>
-                      <h3 style={{ margin: '0 0 10px 0', color: '#d4af37', fontSize: '20px' }}>{edition.year}</h3>
+                    <div style={{ padding: '25px' }}>
+                      <h3 style={{ margin: '0 0 10px 0', color: '#d4af37', fontSize: '22px' }}>{edition.year}</h3>
                       <p style={{ color: '#ccc', fontSize: '18px', fontWeight: '500', margin: '0 0 20px 0' }}>
                         {edition.tagline}
                       </p>
@@ -138,7 +138,7 @@ export default function KarwaanSection() {
                           disabled
                           style={{
                             display: 'inline-block', color: '#666', backgroundColor: '#222',
-                            padding: '8px 20px', borderRadius: '4px', border: 'none', cursor: 'not-allowed'
+                            padding: '10px 24px', borderRadius: '4px', border: 'none', cursor: 'not-allowed', fontWeight: 'bold'
                           }}
                         >
                           Locked
@@ -150,7 +150,7 @@ export default function KarwaanSection() {
                           rel="noopener noreferrer"
                           style={{
                             display: 'inline-block', color: '#000', backgroundColor: '#fff',
-                            padding: '8px 20px', borderRadius: '4px', textDecoration: 'none', fontWeight: 'bold'
+                            padding: '10px 24px', borderRadius: '4px', textDecoration: 'none', fontWeight: 'bold'
                           }}
                         >
                           View on Drive
@@ -168,10 +168,10 @@ export default function KarwaanSection() {
             onClick={nextSlide}
             disabled={currentIndex >= karwaanEditions.length - 2}
             style={{
-              position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)',
+              position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
               backgroundColor: currentIndex >= karwaanEditions.length - 2 ? '#222' : '#d4af37',
-              color: '#000', border: 'none', width: '40px', height: '40px', borderRadius: '50%',
-              cursor: currentIndex >= karwaanEditions.length - 2 ? 'not-allowed' : 'pointer', fontWeight: 'bold', fontSize: '20px', zIndex: 10
+              color: '#000', border: 'none', width: '45px', height: '45px', borderRadius: '50%',
+              cursor: currentIndex >= karwaanEditions.length - 2 ? 'not-allowed' : 'pointer', fontWeight: 'bold', fontSize: '24px', zIndex: 10
             }}
           >
             &#8250;
