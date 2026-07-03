@@ -21,36 +21,36 @@ const karwaanEditions = [
 export default function KarwaanSection() {
   const [showMore, setShowMore] = useState(false);
 
-  return (
-    <section className="karwaan-section" style={{ padding: '40px 20px', backgroundColor: '#000', color: '#fff', textAlign: 'center' }}>
-      
-      {/* 1. Main Landing Aspect Banner (Reference: image_cf6c02.jpg) */}
-      <div className="karwaan-banner" style={{ maxWidth: '1000px', margin: '0 auto 30px auto', border: '1px solid #333', borderRadius: '8px', overflow: 'hidden' }}>
-        <img 
-          src="/image_cf6c02.jpeg" // Place your banner image in the frontend/public folder named exactly this
-          alt="Karwaan Banner" 
-          style={{ width: '100%', height: 'auto', display: 'block' }} 
-        />
-      </div>
+return (
+  <section className="karwaan-section" style={{ width: '100%', backgroundColor: '#000', color: '#fff', textAlign: 'center' }}>
+    
+    {/* 1. Main Landing Aspect Banner - Full Width Fix */}
+    <div className="karwaan-banner" style={{ width: '100%', margin: '0 0 30px 0', overflow: 'hidden' }}>
+      <img 
+        src="/image_cf6c02.jpeg" 
+        alt="Karwaan Banner" 
+        style={{ width: '100%', height: 'auto', display: 'block' }} 
+      />
+    </div>
 
-      {/* 2. Interactive Toggle Button */}
-      <button 
-        onClick={() => setShowMore(!showMore)}
-        style={{
-          padding: '12px 30px',
-          fontSize: '16px',
-          backgroundColor: '#d4af37', // Elegant Gold color matching the theme
-          color: '#000',
-          border: 'none',
-          borderRadius: '25px',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-          transition: 'all 0.3s ease',
-          marginBottom: '40px'
-        }}
-      >
-        {showMore ? 'Show Less' : 'Explore Karwaan Editions'}
-      </button>
+    {/* 2. Interactive Toggle Button */}
+    <button 
+      onClick={() => setShowMore(!showMore)}
+      style={{
+        padding: '12px 30px',
+        fontSize: '16px',
+        backgroundColor: '#d4af37', 
+        color: '#000',
+        border: 'none',
+        borderRadius: '25px',
+        cursor: 'pointer',
+        fontWeight: 'bold',
+        transition: 'all 0.3s ease',
+        marginBottom: '40px'
+      }}
+    >
+      {showMore ? 'Show Less' : 'Explore Karwaan Editions'}
+    </button>
 
       {/* 3. The Expandable Cards Segment */}
       {showMore && (
