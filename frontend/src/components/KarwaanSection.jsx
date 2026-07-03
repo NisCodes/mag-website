@@ -45,7 +45,7 @@ export default function KarwaanSection() {
   };
 
   return (
-    <section className="karwaan-section" style={{ width: '100%', backgroundColor: '#000', color: '#fff', textAlign: 'center', fontFamily: 'sans-serif' }}>
+    <section className="karwaan-section" style={{ width: '100%', backgroundColor: '#000', color: '#fff', textAlign: 'center', fontFamily: 'sans-serif', paddingBottom: '40px' }}>
       
       {/* Main Landing Banner */}
       <div className="karwaan-banner" style={{ width: '100%', margin: '0 0 30px 0', overflow: 'hidden' }}>
@@ -55,6 +55,11 @@ export default function KarwaanSection() {
           style={{ width: '100%', height: 'auto', display: 'block' }} 
         />
       </div>
+
+      {/* Added Section Heading */}
+      <h2 style={{ fontSize: '32px', color: '#fff', marginBottom: '20px', fontWeight: 'bold', letterSpacing: '1px' }}>
+        Explore Karwaan
+      </h2>
 
       {/* Toggle Button */}
       <button 
@@ -93,7 +98,7 @@ export default function KarwaanSection() {
             &#8249;
           </button>
 
-          {/* Wrapper for the cards track - Expanded width */}
+          {/* Wrapper for the cards track */}
           <div style={{ overflow: 'hidden', width: '100%' }}>
             <div 
               style={{
@@ -125,7 +130,7 @@ export default function KarwaanSection() {
                     <img 
                       src={edition.coverImage} 
                       alt={edition.year} 
-                      style={{ width: '100%', height: '380px', objectFit: 'cover' }} // Taller image size for wider screens
+                      style={{ width: '100%', height: '380px', objectFit: 'cover' }}
                     />
                     <div style={{ padding: '25px' }}>
                       <h3 style={{ margin: '0 0 10px 0', color: '#d4af37', fontSize: '22px' }}>{edition.year}</h3>
