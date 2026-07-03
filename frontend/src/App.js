@@ -31,10 +31,9 @@ function MainLayout() {
             path="/"
             element={
               <>
-                <Section />
-                <KarwaanSection />
+                <Section />                
                 <Magazine />
-                
+                <KarwaanSection />
                 <BlogSection />
                 <EyesOnly />
                 <AddYourContent />
