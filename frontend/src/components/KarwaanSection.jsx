@@ -44,11 +44,16 @@ export default function KarwaanSection() {
     }
   };
 
-  return (
+ return (
     <section className="karwaan-section" style={{ width: '100%', backgroundColor: '#000', color: '#fff', textAlign: 'center', fontFamily: 'sans-serif', paddingBottom: '40px' }}>
       
-      {/* Main Landing Banner */}
-      <div className="karwaan-banner" style={{ width: '100%', margin: '0 0 30px 0', overflow: 'hidden' }}>
+      {/* 1. Gold Section Heading at the Top */}
+      <h2 style={{ fontSize: '36px', color: '#d4af37', marginTop: '40px', marginBottom: '25px', fontWeight: 'bold', letterSpacing: '2px', textTransform: 'uppercase' }}>
+        Explore Karwaan
+      </h2>
+
+      {/* 2. Main Landing Banner */}
+      <div className="karwaan-banner" style={{ width: '100%', margin: '0 0 40px 0', overflow: 'hidden' }}>
         <img 
           src="/image_cf6c02.jpeg" 
           alt="Karwaan Banner" 
@@ -56,29 +61,9 @@ export default function KarwaanSection() {
         />
       </div>
 
-      {/* Added Section Heading */}
-      <h2 style={{ fontSize: '32px', color: '#fff', marginBottom: '20px', fontWeight: 'bold', letterSpacing: '1px' }}>
-        Explore Karwaan
-      </h2>
-
-      {/* Toggle Button */}
+      {/* 3. Toggle Button */}
       <button 
         onClick={() => setShowMore(!showMore)}
-        style={{
-          padding: '12px 30px',
-          fontSize: '16px',
-          backgroundColor: '#d4af37', 
-          color: '#000',
-          border: 'none',
-          borderRadius: '25px',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-          transition: 'all 0.3s ease',
-          marginBottom: '40px'
-        }}
-      >
-        {showMore ? 'Show Less' : 'Explore Karwaan Editions'}
-      </button>
 
       {/* Sliding Viewport Segment */}
       {showMore && (
