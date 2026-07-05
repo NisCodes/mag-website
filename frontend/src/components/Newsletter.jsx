@@ -72,48 +72,49 @@ const Newsletter = () => {
               1200: { slidesPerView: 3, spaceBetween: 25 },
             }}
           >
-            {newsletters.map((newsletter, index) => (
-              <SwiperSlide key={newsletter.id || index}>
-                <div 
-                  className="magazine-card text-center p-3" 
-                  style={{ 
-                    backgroundColor: "rgba(20, 20, 20, 0.6)", 
-                    border: "1px solid rgba(204, 164, 94, 0.15)", 
-                    borderRadius: "12px",
-                    transition: "transform 0.3s ease",
-                    overflow: "hidden"
-                  }}
-                >
-                  {/* Clean base64 image renderer matching the database format */}
-                  <a href={newsletter.link} target="_blank" rel="noopener noreferrer" className="d-block mb-3 overflow-hidden rounded">
-                    <img
-                      src={`data:image/jpeg;base64,${newsletter.image}`}
-                      className="magazine-img img-fluid"
-                      alt={newsletter.title || "Newsletter Cover"}
-                      style={{ 
-                        maxHeight: "360px", 
-                        objectFit: "cover",
-                        borderRadius: "8px",
-                        transition: "transform 0.3s ease" 
-                      }}
-                    />
-                  </a>
-                  
-                  {/* Centralized title typography styling */}
-                  <h4 
-                    style={{ 
-                      color: "#cca45e", 
-                      fontFamily: "Georgia, serif", 
-                      fontSize: "1.15rem", 
-                      marginTop: "10px",
-                      letterSpacing: "0.5px"
-                    }}
-                  >
-                    {newsletter.title || "Untitled Edition"}
-                  </h4>
-                </div>
-              </SwiperSlide>
-            ))}
+          {/* Change your mapping key from newsletter.id to use the actual title fields */}
+{newsletters.map((newsletter, index) => (
+  <SwiperSlide key={newsletter.id || newsletter.title || index}>
+    <div 
+      className="magazine-card text-center p-3" 
+      style={{ 
+        backgroundColor: "rgba(20, 20, 20, 0.6)", 
+        border: "1px solid rgba(204, 164, 94, 0.15)", 
+        borderRadius: "12px",
+        transition: "transform 0.3s ease",
+        overflow: "hidden"
+      }}
+    >
+      {/* 1. Target the correct link property from Firestore */}
+      <a href={newsletter.link} target="_blank" rel="noopener noreferrer" className="d-block mb-3 overflow-hidden rounded">
+        <img
+          src={`data:image/jpeg;base64,${newsletter.image}`}
+          className="magazine-img img-fluid"
+          alt={newsletter.title || "Newsletter Cover"}
+          style={{ 
+            maxHeight: "360px", 
+            objectFit: "cover",
+            borderRadius: "8px",
+            transition: "transform 0.3s ease" 
+          }}
+        />
+      </a>
+      
+      {/* 2. Target the exact 'title' field string from Firestore */}
+      <h4 
+        style={{ 
+          color: "#cca45e", 
+          fontFamily: "Georgia, serif", 
+          fontSize: "1.15rem", 
+          marginTop: "10px",
+          letterSpacing: "0.5px"
+        }}
+      >
+        {newsletter.title || "Untitled Edition"}
+      </h4>
+    </div>
+  </SwiperSlide>
+))}
           </Swiper>
         )}
       </div>
