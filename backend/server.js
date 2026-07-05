@@ -10,6 +10,7 @@ import { messageRouter } from "./routers/messageRouter.js";
 import { poetryRouter } from "./routers/poetryRouter.js";
 import { eventRouter } from "./routers/eventRouter.js";
 import { magazineRouter } from "./routers/magazineRouter.js";
+import { newsletterRouter } from "./routes/newsletterRouter.js";
 
 
 const app = express();
@@ -47,6 +48,7 @@ app.use("/messages", messageRouter);
 app.use("/poetry", poetryRouter);
 app.use("/events", eventRouter);
 app.use("/magazine", magazineRouter);
+app.use("/newsletter", newsletterRouter);
 
 export { db };
 
