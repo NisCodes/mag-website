@@ -1,68 +1,50 @@
-import { db } from "../server.js";
+import { db } from "../firebase.js"; // Importing your Firestore database instance
+import { collection, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
 
-export const pushNewsletter = async (req, res) => {
-  const formData = req.body;
-  const image = req.file ? req.file.buffer : null;
-
-  const newNewsletterPost = {
-    edition: formData.edition, // This will act as your title string (e.g., "Newsletter Edition 1")
-    link: formData.link,
-    image: image,
-    date: formData.date || new Date(),
-  };
-
-  try {
-    await db.query(
-      `INSERT INTO newsletter (edition, link, image, date) 
-       VALUES ($1, $2, $3, $4)`,
-      [
-        newNewsletterPost.edition,
-        newNewsletterPost.link,
-        newNewsletterPost.image,
-        newNewsletterPost.date,
-      ]
-    );
-    res.status(201).json({ message: "Newsletter added successfully" });
-  } catch (err) {
-    console.error(`Database error: ${err}`);
-    res.status(500).json({ error: "Error adding newsletter" });
-  }
-};
-
+// 1. Fetch from Firestore newsletter collection
 export const getNewsletter = async (req, res) => {
   try {
-    const response = await db.query("SELECT * FROM newsletter");
-    const newsletters = response.rows.map((newsletter) => {
-      if (newsletter.image) {
-        const imageBase64 = newsletter.image.toString("base64");
-        // Maps edition to 'title' so the frontend component reads it instantly
-        return { 
-          ...newsletter, 
-          title: newsletter.edition, 
-          image: imageBase64 
-        };
-      }
-      return { ...newsletter, title: newsletter.edition };
-    });
+    const querySnapshot = await getDocs(collection(db, "newsletter"));
+    const newsletters = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data() // This automatically includes title, link, and the image base64 string
+    }));
 
     res.status(200).json(newsletters);
   } catch (err) {
-    console.error(`Database error: ${err}`);
+    console.error(`Firestore error: ${err}`);
     res.status(500).json({ error: "Error fetching newsletters" });
   }
 };
 
+// 2. Push to Firestore newsletter collection
+export const pushNewsletter = async (req, res) => {
+  try {
+    const { title, link, image } = req.body; // Expects text fields + base64 image string
+
+    const newNewsletter = {
+      title,
+      link,
+      image,
+      date: new Date().toISOString()
+    };
+
+    const docRef = await addDoc(collection(db, "newsletter"), newNewsletter);
+    res.status(201).json({ message: "Newsletter added successfully", id: docRef.id });
+  } catch (err) {
+    console.error(`Firestore error: ${err}`);
+    res.status(500).json({ error: "Error adding newsletter" });
+  }
+};
+
+// 3. Delete from Firestore newsletter collection
 export const deleteNewsletter = async (req, res) => {
   try {
-    const result = await db.query("SELECT * FROM newsletter WHERE id = $1", [req.params.id]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Newsletter not found" });
-    }
-    await db.query("DELETE FROM newsletter WHERE id = $1", [req.params.id]);
-
+    const newsletterDocRef = doc(db, "newsletter", req.params.id);
+    await deleteDoc(newsletterDocRef);
     res.status(200).json({ message: "Newsletter deleted successfully" });
   } catch (err) {
-    console.error(`Database error: ${err}`);
+    console.error(`Firestore error: ${err}`);
     res.status(500).json({ error: "Error deleting newsletter" });
   }
 };
