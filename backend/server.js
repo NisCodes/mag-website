@@ -10,7 +10,7 @@ import { messageRouter } from "./routers/messageRouter.js";
 import { poetryRouter } from "./routers/poetryRouter.js";
 import { eventRouter } from "./routers/eventRouter.js";
 import { magazineRouter } from "./routers/magazineRouter.js";
-import { newsletterRouter } from "./routes/newsletterRouter.js";
+import { newsletterRouter } from "./routers/newsletterRouter.js";
 
 
 const app = express();
