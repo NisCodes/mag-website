@@ -16,6 +16,7 @@ import Team from "./components/Team.jsx";
 import Prose from "./components/Prose.jsx";
 import Contact from "./components/Contact.jsx";
 import Footer from "./components/Footer.jsx";
+import Newsletter from "./components/Newsletter.jsx";
 
 function MainLayout() {
   const location = useLocation();
@@ -34,6 +35,7 @@ function MainLayout() {
                 <Section />                
                 <Magazine />
                 <KarwaanSection />
+                <Newsletter />
                 <BlogSection />
                 <EyesOnly />
                 <AddYourContent />
