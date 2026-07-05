@@ -1,14 +1,20 @@
-import { db } from "../firebase.js"; // Importing your Firestore database instance
-import { collection, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
+import { db } from "../server.js"; // Importing the Admin SDK db exported from server.js
 
 // 1. Fetch from Firestore newsletter collection
 export const getNewsletter = async (req, res) => {
   try {
-    const querySnapshot = await getDocs(collection(db, "newsletter"));
-    const newsletters = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data() // This automatically includes title, link, and the image base64 string
-    }));
+    // Admin SDK uses standard object chaining, not getDocs()
+    const snapshot = await db.collection("newsletter").get();
+    
+    const newsletters = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        title: data.title || "", // Explicitly mapped to fix the frontend Swiper bug
+        link: data.link || "",
+        image: data.image || ""
+      };
+    });
 
     res.status(200).json(newsletters);
   } catch (err) {
@@ -20,7 +26,7 @@ export const getNewsletter = async (req, res) => {
 // 2. Push to Firestore newsletter collection
 export const pushNewsletter = async (req, res) => {
   try {
-    const { title, link, image } = req.body; // Expects text fields + base64 image string
+    const { title, link, image } = req.body; 
 
     const newNewsletter = {
       title,
@@ -29,7 +35,8 @@ export const pushNewsletter = async (req, res) => {
       date: new Date().toISOString()
     };
 
-    const docRef = await addDoc(collection(db, "newsletter"), newNewsletter);
+    // Admin SDK syntax for adding documents
+    const docRef = await db.collection("newsletter").add(newNewsletter);
     res.status(201).json({ message: "Newsletter added successfully", id: docRef.id });
   } catch (err) {
     console.error(`Firestore error: ${err}`);
@@ -40,8 +47,8 @@ export const pushNewsletter = async (req, res) => {
 // 3. Delete from Firestore newsletter collection
 export const deleteNewsletter = async (req, res) => {
   try {
-    const newsletterDocRef = doc(db, "newsletter", req.params.id);
-    await deleteDoc(newsletterDocRef);
+    // Admin SDK syntax for deleting documents
+    await db.collection("newsletter").doc(req.params.id).delete();
     res.status(200).json({ message: "Newsletter deleted successfully" });
   } catch (err) {
     console.error(`Firestore error: ${err}`);
