@@ -7,7 +7,6 @@ import {
 
 const router = express.Router();
 
-// Simple routes since Firestore handles everything as standard JSON fields
 router.post("/post", pushNewsletter);
 router.get("/get", getNewsletter);
 router.delete("/delete/:id", deleteNewsletter);
