@@ -55,3 +55,4 @@ export { db };
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+// Forcing Vercel to rebuild the server
