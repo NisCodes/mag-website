@@ -1,0 +1,83 @@
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 90vh;
+  padding: 80px;
+  background: #f8fafc;
+}
+
+.hero-left {
+  width: 50%;
+}
+
+.hero-left h1 {
+  font-size: 60px;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.hero-left p {
+  margin: 25px 0;
+  font-size: 20px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.primary-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.secondary-btn {
+  background: white;
+  border: 2px solid #2563eb;
+  color: #2563eb;
+  padding: 15px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.hero-right {
+  width: 45%;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-card {
+  width: 350px;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.hero-card h2 {
+  margin-bottom: 20px;
+}
+
+.progress {
+  width: 100%;
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.progress-fill {
+  width: 75%;
+  height: 100%;
+  background: #2563eb;
+  border-radius: 10px;
+}

@@ -1,0 +1,76 @@
+.gallery {
+  padding: 60px;
+  text-align: left;
+}
+
+.gallery h1 {
+  margin-bottom: 40px;
+}
+
+/* Horizontal Scroller */
+.gallery-grid {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 20px 10px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+}
+
+.gallery-grid::-webkit-scrollbar {
+  height: 8px;
+}
+
+.gallery-grid::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 20px;
+}
+
+.gallery-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Magazine Card */
+.card {
+  flex: 0 0 auto;
+  width: 260px;
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* Clickable Cover */
+.cover-link {
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* Magazine Cover */
+.cover-link img {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  height: 380px;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.cover-link:hover img {
+  transform: scale(1.03);
+}
+
+.card h2 {
+  margin-top: 20px;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
