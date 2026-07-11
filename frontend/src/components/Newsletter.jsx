@@ -6,7 +6,8 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import axios from "axios";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 import "../css/magazine.css"; // You can change this to newsletter.css if you make a copy!
 
 const Newsletter = () => {
@@ -18,16 +19,20 @@ const Newsletter = () => {
 
     const fetchNewsletters = async () => {
       try {
-        const response = await axios.get("https://mag-backend-lime.vercel.app/newsletter/get");
-        
-        // Sort newsletters reverse-alphabetically (Z to A) by title string
-        const sortedData = response.data.sort((a, b) => {
-          const titleA = a.title || "";
-          const titleB = b.title || "";
-          return titleB.localeCompare(titleA);
-        });
+        const snapshot = await getDocs(collection(db, "newsletter"));
 
-        setNewsletters(sortedData);
+const data = snapshot.docs.map((doc) => ({
+  id: doc.id,
+  ...doc.data(),
+}));
+
+const sortedData = data.sort((a, b) => {
+  const titleA = a.title || "";
+  const titleB = b.title || "";
+  return titleB.localeCompare(titleA);
+});
+
+setNewsletters(sortedData);
       } catch (error) {
         console.error("Error fetching newsletter data:", error);
       } finally {
