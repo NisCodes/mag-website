@@ -26,17 +26,7 @@ const teamMembers = [
       linkedin: ''
     }
   },
-  {
-    name: 'MAG 2022',
-    role: '',
-    imgSrc: 'assets/img/team/2022.jpg',
-    socialLinks: {
-      twitter: '',
-      facebook: '',
-      instagram: '',
-      linkedin: ''
-    }
-  }
+
 ];
 
 function Team() {
