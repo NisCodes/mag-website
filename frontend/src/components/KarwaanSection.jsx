@@ -14,7 +14,7 @@ const karwaanEditions = [
     year: "Karwaan '25",
     tagline: "किरदार",
     coverImage: "/karwaan2025.jpeg",
-    driveLink: "https://drive.google.com/your-link-here-2025",
+    driveLink: "https://drive.google.com/file/d/1tuA6O2PsgzDz8WtwgfKa2X6ytzke-2Ix/view",
     isComingSoon: false
   },
   {
