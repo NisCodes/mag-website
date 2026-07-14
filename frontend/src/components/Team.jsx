@@ -7,7 +7,7 @@ const teamMembers = [
   {
     name: 'MAG 2024',
     role: '',
-    imgSrc: 'assets/img/team/2024.jpg',
+    imgSrc: 'assets/img/team/2024.JPG',
     socialLinks: {
       twitter: '',
       facebook: '',
