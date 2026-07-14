@@ -4,6 +4,18 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 const teamMembers = [
+
+    {
+    name: 'MAG 2025',
+    role: '',
+    imgSrc: 'assets/img/team/2025.JPG',
+    socialLinks: {
+      twitter: '',
+      facebook: '',
+      instagram: '',
+      linkedin: ''
+    }
+  },
   {
     name: 'MAG 2024',
     role: '',
