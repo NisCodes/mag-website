@@ -9,7 +9,8 @@ const BlogPage = () => {
   const [selectedBlog, setSelectedBlog] = useState(null); 
 
   useEffect(() => {
-    axios.get('https://mag-backend-lime.vercel.app/blogs/get')
+    // Changed endpoint from '/blogs/get' to '/blogs' to match the working home page widget
+    axios.get('https://mag-backend-lime.vercel.app/blogs')
       .then(response => {
         setBlogs(response.data);
         setLoading(false);
