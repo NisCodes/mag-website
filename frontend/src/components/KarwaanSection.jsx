@@ -1,40 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 
-const karwaanEditions = [
-  {
-    id: 1,
-    year: "Karwaan '26",
-    tagline: "Coming Soon...",
-    coverImage: "/karwaan2026.jpeg",
-    driveLink: "#",
-    isComingSoon: true
-  },
-  {
-    id: 2,
-    year: "Karwaan '25",
-    tagline: "किरदार",
-    coverImage: "/karwaan2025.jpeg",
-    driveLink: "https://drive.google.com/file/d/1tuA6O2PsgzDz8WtwgfKa2X6ytzke-2Ix/view",
-    isComingSoon: false
-  },
-  {
-    id: 3,
-    year: "Karwaan '24",
-    tagline: "कहानी",
-    coverImage: "/karwaan2024.jpeg",
-    driveLink: "https://drive.google.com/your-link-here-2024",
-    isComingSoon: false
-  }
-];
 
 export default function KarwaanSection() {
   const [showMore, setShowMore] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [karwaanEditions, setKarwaanEditions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchKarwaan = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, "karwaan"));
+
+    console.log("Number of docs:", snapshot.size);
+
+    snapshot.forEach((doc) => {
+      console.log(doc.id, doc.data());
+    });
+
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    setKarwaanEditions(data);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+    fetchKarwaan();
+  }, []);
 
   const nextSlide = () => {
     // Limits scrolling appropriately based on viewport conditions
     const isMobile = window.innerWidth <= 768;
-    const maxIndex = isMobile ? karwaanEditions.length - 1 : karwaanEditions.length - 2;
+    const cardsVisible = isMobile ? 1 : 2;
+const maxIndex = Math.max(0, karwaanEditions.length - cardsVisible);
     if (currentIndex < maxIndex) {
       setCurrentIndex(currentIndex + 1);
     }
@@ -47,37 +52,32 @@ export default function KarwaanSection() {
   };
 
   const isMobile = window.innerWidth <= 768;
-  const showRightArrow = currentIndex < (isMobile ? karwaanEditions.length - 1 : karwaanEditions.length - 2);
+  const cardsVisible = isMobile ? 1 : 2;
+
+const showRightArrow =
+  currentIndex < karwaanEditions.length - cardsVisible;
+  if (loading) {
+  return (
+    <section
+      className="karwaan-section"
+      style={{
+        backgroundColor: "#000",
+        color: "#fff",
+        minHeight: "300px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <h3>Loading Karwaan...</h3>
+    </section>
+  );
+}
 
   return (
     <section className="karwaan-section" style={{ width: '100%', backgroundColor: '#000', color: '#fff', textAlign: 'center', paddingBottom: '40px' }}>
       
       {/* Injecting CSS dynamically to control mobile vs desktop widths */}
-      <style>{`
-        .karwaan-track {
-          display: flex;
-          transition: transform 0.4s ease-in-out;
-          width: ${karwaanEditions.length * 50}%;
-        }
-        .karwaan-card-wrapper {
-          width: ${100 / karwaanEditions.length}%;
-          padding: 0 15px;
-          box-sizing: border-box;
-        }
-        @media (max-width: 768px) {
-          .karwaan-track {
-            width: ${karwaanEditions.length * 100}%;
-            transform: translateX(-${currentIndex * (100 / karwaanEditions.length)}%) !important;
-          }
-          .karwaan-card-wrapper {
-            width: ${100 / karwaanEditions.length}%;
-            padding: 0 5px;
-          }
-          .karwaan-card-img {
-            aspect-ratio: 1/1 !important; /* Square layout fits standard mobile frames much better */
-          }
-        }
-      `}</style>
 
       {/* 1. Left-aligned Heading inheriting parent font aesthetics */}
       <h2 style={{ fontSize: '32px', color: '#d4af37', paddingTop: '40px', paddingLeft: '20px', marginBottom: '25px', fontWeight: 'bold', letterSpacing: '0.5px', textAlign: 'left' }}>
@@ -135,14 +135,24 @@ export default function KarwaanSection() {
 
           {/* Core Viewport Slider Window */}
           <div style={{ overflow: 'hidden', width: '100%' }}>
-            <div 
-              className="karwaan-track"
-              style={{
-                transform: `translateX(-${currentIndex * 50}%)`
-              }}
-            >
+            <div
+  className="karwaan-track"
+  style={{
+    display: "flex",
+    transition: "transform 0.4s ease",
+    transform: `translateX(-${currentIndex * 50}%)`,
+  }}
+>
+              
               {karwaanEditions.map((edition) => (
-                <div key={edition.id} className="karwaan-card-wrapper">
+                <div
+  key={edition.id}
+  style={{
+    flex: isMobile ? "0 0 100%" : "0 0 50%",
+    padding: "0 15px",
+    boxSizing: "border-box",
+  }}
+>
                   <div 
                     style={{
                       backgroundColor: '#111',
@@ -153,24 +163,24 @@ export default function KarwaanSection() {
                       textAlign: 'center'
                     }}
                   >
-                    <img 
-                      className="karwaan-card-img"
-                      src={edition.coverImage} 
-                      alt={edition.year} 
-                      style={{ 
-                        width: '100%', 
-                        height: 'auto', 
-                        aspectRatio: '16/10', 
-                        objectFit: 'cover' 
-                      }}
-                    />
+                    <img
+  className="karwaan-card-img"
+  src={edition.image}
+  alt={edition.title}
+  style={{
+    width: "100%",
+    height: "auto",
+    aspectRatio: "16/10",
+    objectFit: "cover"
+  }}
+/>
                     <div style={{ padding: '20px' }}>
-                      <h3 style={{ margin: '0 0 10px 0', color: '#d4af37', fontSize: '20px' }}>{edition.year}</h3>
+                      <h3 style={{ margin: '0 0 10px 0', color: '#d4af37', fontSize: '20px' }}>{edition.title}</h3>
                       <p style={{ color: '#ccc', fontSize: '16px', fontWeight: '500', margin: '0 0 20px 0' }}>
                         {edition.tagline}
                       </p>
                       
-                      {edition.isComingSoon ? (
+                      {edition.comingSoon ? (
                         <button 
                           disabled
                           style={{
@@ -182,7 +192,7 @@ export default function KarwaanSection() {
                         </button>
                       ) : (
                         <a 
-                          href={edition.driveLink} 
+                          href={edition.link} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           style={{
